@@ -8,7 +8,6 @@ import Storyteller from './pages/Storyteller.jsx'
 export default function App() {
   return (
     <Router>
-      <Nav />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/builder" element={<Builder />} />

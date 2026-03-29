@@ -57,24 +57,109 @@ export default function Author() {
     <div className="container" style={{ paddingTop: 80, paddingBottom: 80, width: '100%' }}>
 
       {/* ── Hero Intro ── */}
-      <p className="eyebrow creative" style={{ marginBottom: 16 }}>The Storyteller</p>
-      <h1 style={{
-        fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 700, lineHeight: 1.1,
-        letterSpacing: '-0.03em', marginBottom: 24,
-      }}>
-        When the laptop closes,{' '}
-        <span style={{ color: 'var(--creative-light)', fontStyle: 'italic' }}>I pick up a pen.</span>
-      </h1>
-      <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.85, maxWidth: 680, marginBottom: 16 }}>
-        Writing under the pen name <strong style={{ color: 'var(--text-primary)' }}>Manu J</strong>, I published
-        my debut psychological thriller <em style={{ color: 'var(--creative-light)' }}>The Artist</em> in 2024.
-        Before that, I spent a year making bedtime stories for children. Somewhere between Python and prose, I
-        found that the best stories — like the best models — are built on a deep understanding of people.
-      </p>
-      <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.85, maxWidth: 680, marginBottom: 56 }}>
-        I don't write to escape the world of data. I write because the questions that fascinate me most —
-        about motive, morality, and the stories we tell ourselves — are best explored in fiction.
-      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 64, alignItems: 'center', marginBottom: 72 }} className="author-hero-top">
+        
+        {/* Left — Copy + Headshot */}
+        <div>
+          <p className="eyebrow creative" style={{ marginBottom: 16 }}>The Storyteller</p>
+          <h1 style={{
+            fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 700, lineHeight: 1.1,
+            letterSpacing: '-0.03em', marginBottom: 32,
+          }}>
+            When the laptop closes,{' '}
+            <span style={{ color: 'var(--creative-light)', fontStyle: 'italic' }}>I pick up a pen.</span>
+          </h1>
+          
+          <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', marginBottom: 24 }} className="story-intro-flex">
+            {/* Real Headshot */}
+            <div style={{ 
+              flexShrink: 0, width: 120, height: 120, borderRadius: '50%', overflow: 'hidden', 
+              border: '2px solid var(--creative-light)', boxShadow: '0 8px 32px rgba(245,158,11,0.15)' 
+            }}>
+              <img src="/The_Artist_Manu_J.jpg" alt="Manu Joseph" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.85, maxWidth: 680, flex: 1 }}>
+              Writing under the pen name <strong style={{ color: 'var(--text-primary)' }}>Manu J</strong>, I published
+              my debut psychological thriller <em style={{ color: 'var(--creative-light)' }}>The Artist</em> in 2024.
+              Somewhere between Python and prose, I found that the best stories — like the best models — are built on a 
+              deep understanding of people.
+            </p>
+          </div>
+
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.85, maxWidth: 680 }}>
+            I don't write to escape the world of data. I write because the questions that fascinate me most —
+            about motive, morality, and the stories we tell ourselves — are best explored in fiction.
+          </p>
+        </div>
+
+        {/* Right — Mind Map Visual */}
+        <div style={{ 
+          position: 'relative', 
+          aspectRatio: '1', 
+          background: 'rgba(245, 158, 11, 0.03)', 
+          border: '1px solid rgba(245, 158, 11, 0.1)', 
+          borderRadius: 24,
+          padding: 20,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden'
+        }}>
+          {/* Subtle Glow Background */}
+          <div style={{ 
+            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+            width: '150%', height: '150%', background: 'radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%)',
+            pointerEvents: 'none'
+          }} />
+
+          {/* Inline SVG Mind Map */}
+          <svg viewBox="0 0 400 400" width="100%" height="100%" style={{ position: 'relative', zIndex: 1 }}>
+            {/* Connection Lines (Paths) */}
+            <g stroke="rgba(245,158,11,0.2)" strokeWidth="1" fill="none">
+              <path d="M200,200 L100,120" /> {/* Center to Alex */}
+              <path d="M200,200 L300,120" /> {/* Center to Nasir */}
+              <path d="M200,200 L200,320" /> {/* Center to Manas */}
+              <path d="M100,120 L50,180" />  {/* Alex to Obsession */}
+              <path d="M100,120 L150,60" />  {/* Alex to Art */}
+              <path d="M300,120 L350,180" /> {/* Nasir to Justice */}
+              <path d="M300,120 L250,60" />  {/* Nasir to The Hunt */}
+              <path d="M200,320 L120,350" /> {/* Manas to Family */}
+              <path d="M200,320 L280,350" /> {/* Manas to Secret */}
+              {/* Crossed Connections */}
+              <path d="M50,180 Q200,150 350,180" strokeDasharray="4 4" stroke="rgba(245,158,11,0.1)" />
+            </g>
+
+            {/* Nodes */}
+            {/* Center Node: The Artist */}
+            <circle cx="200" cy="200" r="14" fill="var(--creative)" filter="blur(2px)" />
+            <circle cx="200" cy="200" r="8" fill="white" />
+            <text x="200" y="235" textAnchor="middle" fontSize="12" fontWeight="700" fill="var(--text-primary)" fontFamily="var(--font-mono)" letterSpacing="0.05em">THE ARTIST</text>
+
+            {/* Alex Node */}
+            <circle cx="100" cy="120" r="6" fill="var(--creative-light)" />
+            <text x="100" y="110" textAnchor="middle" fontSize="11" fill="var(--creative-light)" fontFamily="var(--font-mono)">ALEX</text>
+            <text x="50" y="195" textAnchor="middle" fontSize="9" fill="var(--text-muted)" fontFamily="var(--font-mono)">OBSESSION</text>
+            <text x="150" y="50" textAnchor="middle" fontSize="9" fill="var(--text-muted)" fontFamily="var(--font-mono)">ART</text>
+
+            {/* Nasir Node */}
+            <circle cx="300" cy="120" r="6" fill="#a78bfa" />
+            <text x="300" y="110" textAnchor="middle" fontSize="11" fill="#a78bfa" fontFamily="var(--font-mono)">NASIR</text>
+            <text x="350" y="195" textAnchor="middle" fontSize="9" fill="var(--text-muted)" fontFamily="var(--font-mono)">JUSTICE</text>
+            <text x="250" y="50" textAnchor="middle" fontSize="9" fill="var(--text-muted)" fontFamily="var(--font-mono)">THE HUNT</text>
+
+            {/* Manas Node */}
+            <circle cx="200" cy="320" r="6" fill="var(--tech-light)" />
+            <text x="200" y="340" textAnchor="middle" fontSize="11" fill="var(--tech-light)" fontFamily="var(--font-mono)">MANAS</text>
+            <text x="120" y="365" textAnchor="middle" fontSize="9" fill="var(--text-muted)" fontFamily="var(--font-mono)">FAMILY</text>
+            <text x="280" y="365" textAnchor="middle" fontSize="9" fill="var(--text-muted)" fontFamily="var(--font-mono)">SECRET</text>
+          </svg>
+
+          {/* Floating UI Badges */}
+          <div style={{ position: 'absolute', top: 20, left: 20, fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--creative-light)', opacity: 0.5 }}>AUTHOR'S BRAIN</div>
+          <div style={{ position: 'absolute', bottom: 20, right: 20, fontSize: 10, fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.2)' }}>SYNAPSE_LINK_STABLE</div>
+        </div>
+      </div>
 
       {/* ── Book Hero ── */}
       <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: 56, alignItems: 'start', marginBottom: 72 }} className="author-hero">
@@ -90,7 +175,7 @@ export default function Author() {
             background: 'var(--bg-card)',
           }}>
             <img
-              src="/book-cover.jpg"
+              src="/book-cover.png"
               alt="The Artist by Manu J"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               onError={e => {
@@ -261,6 +346,8 @@ export default function Author() {
 
       <style>{`
         @media (max-width: 768px) {
+          .author-hero-top { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .story-intro-flex { flex-direction: column !important; gap: 20px !important; align-items: center !important; text-align: center !important; }
           .author-hero { grid-template-columns: 1fr !important; }
           .author-hero > div:first-child { max-width: 240px; }
           .char-grid { grid-template-columns: 1fr !important; }

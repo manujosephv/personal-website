@@ -1,25 +1,7 @@
 import { useState, useEffect } from 'react'
 
-export default function SideNav({ sections }) {
-  const [active, setActive] = useState('home')
-
-  useEffect(() => {
-    const observers = []
-
-    sections.forEach(({ id }) => {
-      const el = document.querySelector(`[data-id="${id}"]`)
-      if (!el) return
-
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActive(id) },
-        { threshold: 0.4 }
-      )
-      obs.observe(el)
-      observers.push(obs)
-    })
-
-    return () => observers.forEach(o => o.disconnect())
-  }, [sections])
+export default function SideNav({ sections, activeIndex }) {
+  const activeId = sections[activeIndex]?.id
 
   return (
     <div style={{
@@ -61,7 +43,7 @@ export default function SideNav({ sections }) {
         }} />
 
         {sections.map(({ id, label }) => {
-          const isActive = active === id
+          const isActive = activeId === id
           return (
             <a
               key={id}

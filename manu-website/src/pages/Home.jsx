@@ -1,25 +1,28 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Hero from '../components/Hero.jsx'
 import About from '../components/About.jsx'
 import Pathways from '../components/Pathways.jsx'
 import Speaking from '../components/Speaking.jsx'
 import Contact from '../components/Contact.jsx'
 import SideNav from '../components/SideNav.jsx'
+import Nav from '../components/Nav.jsx'
 
 const homeSections = [
-  { id: 'home',     label: '00' },
-  { id: 'about',    label: '01' },
-  { id: 'pathways', label: '02' },
-  { id: 'speaking', label: '03' },
-  { id: 'contact',  label: '04' },
+  { id: 'home',     label: 'Home' },
+  { id: 'about',    label: 'About' },
+  { id: 'pathways', label: 'Two Paths' },
+  { id: 'speaking', label: 'Media' },
+  { id: 'contact',  label: 'Contact' },
 ]
 
 export default function Home() {
   const wrapperRef = useRef(null)
   const animRef = useRef(false)
-  const currentRef = useRef(0)
+  const currentRef = useRef(0) // Logic-driving ref
+  const [activeIndex, setActiveIndex] = useState(0) // UI-driving state
   const dragRef = useRef(0)
   const snapTimeout = useRef(null)
+  const goToSectionRef = useRef(null)
 
   useEffect(() => {
     // Determine screen height for math
@@ -47,7 +50,6 @@ export default function Home() {
 
     const goToSection = (index) => {
       if (index < 0 || index >= homeSections.length) {
-        // Snap back if out of bounds
         dragRef.current = 0;
         updateTransform(true);
         return;
@@ -55,15 +57,14 @@ export default function Home() {
 
       animRef.current = true;
       currentRef.current = index;
+      setActiveIndex(index);
       dragRef.current = 0;
       updateTransform(true);
 
-      // Handle intersection observers manually here since we bypass native scroll
       sectionsList.forEach((s, i) => {
         if (i === index) {
           s.classList.add('in-view')
         } else {
-          // Delay removal so it slides out visibly before resetting
           setTimeout(() => {
             s.classList.remove('in-view')
           }, 850)
@@ -74,26 +75,26 @@ export default function Home() {
         animRef.current = false;
       }, 850);
     };
+    
+    // Expose goToSection to component scope via Ref
+    goToSectionRef.current = goToSection;
 
     const handleWheel = (e) => {
-      e.preventDefault(); // Stop native scrolling entirely
-      if (animRef.current) return; // Ignore input while transitioning
+      e.preventDefault();
+      if (animRef.current) return;
 
-      // Extremely high artificial resistance (10% of trackpad movement)
       const resistance = 0.12; 
       dragRef.current += (e.deltaY * resistance);
 
-      const THRESHOLD = 65; // User must "drag" 65 virtual pixels to trigger snap
+      const THRESHOLD = 65;
 
-      // Restrict pull limits visually
       if (dragRef.current > 120) dragRef.current = 120;
       if (dragRef.current < -120) dragRef.current = -120;
       if (currentRef.current === 0 && dragRef.current < 0) dragRef.current = Math.max(dragRef.current, -20);
       if (currentRef.current === homeSections.length - 1 && dragRef.current > 0) dragRef.current = Math.min(dragRef.current, 20);
 
-      updateTransform(false); // Move slightly with no transition
+      updateTransform(false);
 
-      // Check threshold crossing
       if (dragRef.current > THRESHOLD) {
         goToSection(currentRef.current + 1);
         return;
@@ -102,7 +103,6 @@ export default function Home() {
         return;
       }
 
-      // If user stops scrolling before threshold, snap back to 0
       clearTimeout(snapTimeout.current);
       snapTimeout.current = setTimeout(() => {
         if (!animRef.current && dragRef.current !== 0) {
@@ -118,11 +118,11 @@ export default function Home() {
     };
 
     const handleTouchMove = (e) => {
-      e.preventDefault(); // prevent native scroll
+      e.preventDefault();
       if (animRef.current || !wrapperRef.current.touchStartY) return;
       
       const deltaY = wrapperRef.current.touchStartY - e.touches[0].clientY;
-      const resistance = 0.3; // Less resistance for native touch
+      const resistance = 0.3;
       dragRef.current = deltaY * resistance;
 
       const THRESHOLD = 80;
@@ -145,7 +145,7 @@ export default function Home() {
       if (animRef.current || dragRef.current === 0) return;
       wrapperRef.current.touchStartY = null;
       dragRef.current = 0;
-      updateTransform(true); // Snap back
+      updateTransform(true);
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
@@ -163,12 +163,10 @@ export default function Home() {
 
     window.addEventListener('hashchange', handleHash)
 
-    // Check on mount (delay slightly to allow full render)
     if (window.location.hash) {
       setTimeout(() => handleHash(), 150)
     }
 
-    // Initialize parallax css variables immediately
     updateTransform(false);
 
     return () => {
@@ -183,7 +181,12 @@ export default function Home() {
 
   return (
     <>
-      <SideNav sections={homeSections} />
+      <Nav 
+        sections={homeSections} 
+        activeIndex={activeIndex} 
+        onNavigate={(idx) => goToSectionRef.current?.(idx)} 
+      />
+      <SideNav sections={homeSections} activeIndex={activeIndex} />
       <main className="fullpage-wrapper">
         <div className="sections-container" ref={wrapperRef}>
           <section data-id="home"     className="section"><Hero /></section>

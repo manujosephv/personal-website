@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Author from '../components/Author.jsx';
+import Nav from '../components/Nav.jsx';
 
 export default function Storyteller() {
   useEffect(() => {
@@ -8,12 +9,9 @@ export default function Storyteller() {
   }, []);
 
   return (
-    <main style={{ minHeight: '100vh', paddingTop: '100px', paddingBottom: '80px' }}>
-      <div className="container" style={{ marginBottom: '40px' }}>
-        <Link to="/" className="btn btn-ghost" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
-          <span>←</span> Back to Home
-        </Link>
-      </div>
+    <>
+      <Nav />
+      <main style={{ minHeight: '100vh', paddingTop: '100px', paddingBottom: '80px' }}>
 
       <div style={{ paddingBottom: '40px' }} id="author">
         <Author />
@@ -21,5 +19,6 @@ export default function Storyteller() {
       
     
     </main>
+    </>
   );
 }

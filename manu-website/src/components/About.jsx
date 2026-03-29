@@ -26,7 +26,7 @@ export default function About() {
             border: '1px solid var(--border)',
           }}>
             <img
-              src="/portrait.jpg"
+              src="/The_Artist_Manu_J.jpg"
               alt="Manu Joseph"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               onError={e => {
