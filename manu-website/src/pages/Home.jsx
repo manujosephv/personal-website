@@ -153,6 +153,21 @@ export default function Home() {
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd);
 
+    const handleHash = () => {
+      const hash = window.location.hash.replace('#', '')
+      const idx = homeSections.findIndex(s => s.id === hash)
+      if (idx !== -1 && idx !== currentRef.current) {
+        goToSection(idx)
+      }
+    }
+
+    window.addEventListener('hashchange', handleHash)
+
+    // Check on mount (delay slightly to allow full render)
+    if (window.location.hash) {
+      setTimeout(() => handleHash(), 150)
+    }
+
     // Initialize parallax css variables immediately
     updateTransform(false);
 
@@ -161,6 +176,7 @@ export default function Home() {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('hashchange', handleHash);
       clearTimeout(snapTimeout.current);
     }
   }, [])
@@ -170,11 +186,11 @@ export default function Home() {
       <SideNav sections={homeSections} />
       <main className="fullpage-wrapper">
         <div className="sections-container" ref={wrapperRef}>
-          <section id="home"     className="section"><Hero /></section>
-          <section id="about"    className="section"><About /></section>
-          <section id="pathways" className="section"><Pathways /></section>
-          <section id="speaking" className="section"><Speaking /></section>
-          <section id="contact"  className="section"><Contact /></section>
+          <section data-id="home"     className="section"><Hero /></section>
+          <section data-id="about"    className="section"><About /></section>
+          <section data-id="pathways" className="section"><Pathways /></section>
+          <section data-id="speaking" className="section"><Speaking /></section>
+          <section data-id="contact"  className="section"><Contact /></section>
         </div>
       </main>
     </>

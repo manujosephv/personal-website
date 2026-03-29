@@ -7,7 +7,7 @@ export default function SideNav({ sections }) {
     const observers = []
 
     sections.forEach(({ id }) => {
-      const el = document.getElementById(id)
+      const el = document.querySelector(`[data-id="${id}"]`)
       if (!el) return
 
       const obs = new IntersectionObserver(
