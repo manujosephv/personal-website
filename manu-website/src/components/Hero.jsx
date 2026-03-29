@@ -106,7 +106,7 @@ export default function Hero() {
             <span style={{ color: 'var(--border-mid)', fontSize: 18 }}>·</span>
             <span style={{
               fontFamily: 'var(--font-sans)', fontSize: 'clamp(0.8rem, 1.8vw, 0.95rem)',
-              color: 'var(--text-muted)',
+              color: '#fff',
             }}>
               Open Source Creator
             </span>
