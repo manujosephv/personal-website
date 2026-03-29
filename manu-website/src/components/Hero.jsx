@@ -1,364 +1,273 @@
-import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+
+/* Splits text into individually animated letter spans */
+function LetterReveal({ text, delay = 0, style = {}, className = '' }) {
+  return (
+    <span className={`letter-reveal ${className}`} style={style}>
+      {text.split('').map((char, i) => (
+        char === ' '
+          ? <span key={i} style={{ display: 'inline-block', width: '0.28em' }} />
+          : <span
+              key={i}
+              className="letter"
+              style={{ animationDelay: `${delay + i * 0.038}s` }}
+            >
+              {char}
+            </span>
+      ))}
+    </span>
+  )
+}
+
+/* Stats that replace the old pill badges */
+const stats = [
+  { value: '15+',    label: 'Years in Data',       sub: 'AI & Analytics',           color: 'tech' },
+  { value: '40',     label: 'Under 40',            sub: 'Data Scientist · AIM',     color: 'tech' },
+  { value: '1,600+', label: 'GitHub Stars',        sub: 'PyTorch Tabular',          color: 'tech' },
+  { value: '5',      label: 'Research Papers',     sub: 'Published Research',       color: 'tech' },
+  { value: '2',      label: 'Patents',             sub: 'AI Innovations',           color: 'tech' },
+  { value: '1',      label: 'Debut Novel',         sub: 'The Artist · 2024',        color: 'creative' },
+]
 
 export default function Hero() {
-  const canvasRef = useRef(null);
+  const shapeRef1 = useRef(null)
+  const shapeRef2 = useRef(null)
 
+  /* Parallax on mouse move */
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let animId;
-    let particles = [];
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    // Create particles
-    for (let i = 0; i < 60; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.4 + 0.3,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        color: i % 3 === 0 ? '#60a5fa' : i % 3 === 1 ? '#f59e0b' : '#ffffff',
-        opacity: Math.random() * 0.4 + 0.1,
-      });
-    }
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.opacity;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      });
-
-      // Draw faint connecting lines
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = particles[i].color;
-            ctx.globalAlpha = (1 - dist / 120) * 0.08;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-            ctx.globalAlpha = 1;
-          }
-        }
+    const onMove = (e) => {
+      const cx = window.innerWidth / 2
+      const cy = window.innerHeight / 2
+      const dx = (e.clientX - cx) / cx
+      const dy = (e.clientY - cy) / cy
+      if (shapeRef1.current) {
+        shapeRef1.current.style.transform = `translate(${dx * 18}px, ${dy * 12}px) rotate(${dx * 6}deg)`
       }
-
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
-
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener('resize', resize);
-    };
-  }, []);
+      if (shapeRef2.current) {
+        shapeRef2.current.style.transform = `translate(${-dx * 12}px, ${-dy * 8}px) rotate(${-dx * 8}deg)`
+      }
+    }
+    window.addEventListener('mousemove', onMove)
+    return () => window.removeEventListener('mousemove', onMove)
+  }, [])
 
   return (
-    <section id="hero" style={{
-      position: 'relative',
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      overflow: 'hidden',
-      background: 'linear-gradient(180deg, var(--bg-void) 0%, var(--bg-primary) 100%)',
-    }}>
-      {/* Particle canvas */}
-      <canvas ref={canvasRef} style={{
-        position: 'absolute',
-        inset: 0,
-        pointerEvents: 'none',
-      }} />
+    <div className="container" style={{ paddingTop: 100, paddingBottom: 80, width: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 40, alignItems: 'center' }} className="hero-grid">
 
-      {/* Radial glow */}
-      <div style={{
-        position: 'absolute',
-        top: '30%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 800,
-        height: 600,
-        background: 'radial-gradient(ellipse, rgba(59,130,246,0.07) 0%, rgba(245,158,11,0.04) 40%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
+        {/* ── Left: text ── */}
+        <div style={{ maxWidth: 700 }}>
 
-      <div className="container" style={{ position: 'relative', zIndex: 1, padding: '120px 24px 80px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ maxWidth: 800, position: 'relative', zIndex: 2 }}>
-
-          {/* Eyebrow */}
+          {/* Location pill */}
           <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            padding: '6px 14px',
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid var(--border)',
-            borderRadius: 999,
+            display: 'inline-flex', alignItems: 'center', gap: 7,
             marginBottom: 36,
-            animation: 'fadeIn 0.8s ease forwards',
+            animation: 'fadeIn 0.6s ease both',
           }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block', animation: 'blink 2s infinite' }} />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-secondary)', letterSpacing: '0.1em' }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', animation: 'blink 2.5s infinite' }} />
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-muted)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
               Bangalore, India
             </span>
           </div>
 
-          {/* Name */}
+          {/* Main title — letter reveal */}
           <h1 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(3.2rem, 9vw, 7rem)',
-            fontWeight: 900,
+            fontSize: 'clamp(3.2rem, 8vw, 6.4rem)',
+            fontWeight: 700,
             lineHeight: 1.0,
-            letterSpacing: '-0.02em',
-            marginBottom: 24,
-            animation: 'fadeInUp 0.8s ease 0.1s both',
+            letterSpacing: '-0.025em',
+            marginBottom: 20,
           }}>
-            <span style={{ display: 'block', color: 'var(--text-primary)' }}>Manu</span>
-            <span style={{ display: 'block', color: 'var(--text-primary)' }}>Joseph.</span>
+            <LetterReveal text="Manu" delay={0.05} style={{ display: 'block' }} />
+            <LetterReveal text="Joseph." delay={0.25} style={{ display: 'block', color: 'var(--text-secondary)' }} />
           </h1>
 
-          {/* Dual role tagline */}
+          {/* Role line */}
           <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 12,
-            alignItems: 'center',
-            marginBottom: 20,
-            animation: 'fadeInUp 0.8s ease 0.25s both',
+            display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
+            marginBottom: 56,
+            animation: 'fadeInUp 0.6s ease 0.55s both',
           }}>
             <span style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'clamp(0.85rem, 2vw, 1.05rem)',
-              fontWeight: 600,
-              color: 'var(--tech-400)',
-              background: 'var(--tech-glow)',
-              border: '1px solid var(--tech-border)',
-              padding: '6px 16px',
-              borderRadius: 8,
+              fontFamily: 'var(--font-mono)', fontSize: 'clamp(0.8rem, 1.8vw, 0.95rem)',
+              color: 'var(--tech-light)', letterSpacing: '0.04em',
             }}>
-              ⬡ Principal Data Scientist
+              Staff Data Scientist
             </span>
-            <span style={{ color: 'var(--text-muted)', fontSize: 18 }}>×</span>
+            <span style={{ color: 'var(--border-mid)', fontSize: 18 }}>·</span>
             <span style={{
-              fontFamily: 'var(--font-display)',
-              fontStyle: 'italic',
-              fontSize: 'clamp(0.85rem, 2vw, 1.05rem)',
-              fontWeight: 600,
-              color: 'var(--creative-400)',
-              background: 'var(--creative-glow)',
-              border: '1px solid var(--creative-border)',
-              padding: '6px 16px',
-              borderRadius: 8,
+              fontFamily: 'var(--font-sans)', fontStyle: 'italic',
+              fontSize: 'clamp(0.8rem, 1.8vw, 0.95rem)',
+              color: 'var(--creative-light)',
             }}>
-              ✦ Storyteller
+              Psychological Thriller Author
+            </span>
+            <span style={{ color: 'var(--border-mid)', fontSize: 18 }}>·</span>
+            <span style={{
+              fontFamily: 'var(--font-sans)', fontSize: 'clamp(0.8rem, 1.8vw, 0.95rem)',
+              color: 'var(--text-muted)',
+            }}>
+              Open Source Creator
             </span>
           </div>
 
-          {/* Achievement Cards */}
+          {/* ── STAT STRIP — replaces the old pills ── */}
           <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '10px',
-            marginBottom: 36,
-            animation: 'fadeInUp 0.8s ease 0.3s both',
-          }}>
-            {[
-              { icon: '⬡', metric: '2K+ Stars', label: 'PyTorch Tabular', type: 'tech' },
-              { icon: '🏆', metric: '40 Under 40', label: 'Data Scientist · AIM', type: 'tech' },
-              { icon: '📘', metric: 'Packt Book', label: 'Time Series Forecasting', type: 'tech' },
-              { icon: '📄', metric: '5 Papers', label: 'ArXiv Published', type: 'tech' },
-              { icon: '🎤', metric: 'MLDS 2026', label: 'Keynote Speaker', type: 'tech' },
-              { icon: '✦', metric: 'The Artist', label: 'Debut Thriller · 2024', type: 'creative' },
-              { icon: '🎙', metric: '20+ Countries', label: 'Little Pajama Tales', type: 'creative' },
-            ].map((a, i) => (
-              <div key={i} className={`achieve-card ${a.type}`}>
-                <span className="achieve-icon">{a.icon}</span>
-                <span className="achieve-metric">{a.metric}</span>
-                <span className="achieve-label">{a.label}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Description */}
-          <p style={{
-            fontSize: 'clamp(1rem, 2vw, 1.15rem)',
-            color: 'var(--text-secondary)',
-            lineHeight: 1.75,
-            maxWidth: 580,
-            marginBottom: 48,
-            animation: 'fadeInUp 0.8s ease 0.35s both',
-          }}>
-            Creator of <span style={{ color: 'var(--tech-300)', fontWeight: 600 }}>PyTorch Tabular</span> —
-            the go-to framework for deep learning on tabular data.
-            Author of <span style={{ color: 'var(--creative-300)', fontStyle: 'italic', fontWeight: 600 }}>The Artist</span> —
-            a psychological thriller that refuses to stay buried.
-          </p>
-
-          {/* CTAs */}
-          <div style={{
-            display: 'flex',
-            gap: 14,
-            flexWrap: 'wrap',
-            animation: 'fadeInUp 0.8s ease 0.45s both',
-          }}>
-            <Link to="/builder" className="btn btn-tech" style={{ fontSize: 15, padding: '13px 28px' }}>
-              <span>Explore the Science</span>
-              <span>→</span>
-            </Link>
-            <Link to="/storyteller" className="btn btn-creative" style={{ fontSize: 15, padding: '13px 28px' }}>
-              <span>Read the Story</span>
-              <span>→</span>
-            </Link>
-            <Link to="/#about" className="btn btn-outline" style={{ fontSize: 15, padding: '13px 28px' }}>
-              About Me
-            </Link>
-          </div>
-
-          {/* Quick stats */}
-          <div style={{
-            display: 'flex',
-            gap: 40,
-            flexWrap: 'wrap',
-            marginTop: 64,
-            paddingTop: 40,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             borderTop: '1px solid var(--border)',
-            animation: 'fadeInUp 0.8s ease 0.55s both',
-          }}>
-            {[
-              { value: '1.6K+', label: 'GitHub Stars', color: 'var(--tech-400)' },
-              { value: '15+', label: 'Years in Data', color: 'var(--tech-400)' },
-              { value: '5', label: 'ArXiv Papers', color: 'var(--tech-400)' },
-              { value: '1', label: 'Debut Novel', color: 'var(--creative-400)' },
-            ].map(s => (
-              <div key={s.label}>
-                <div className="stat-value" style={{ color: s.color }}>{s.value}</div>
-                <div className="stat-label">{s.label}</div>
+            borderLeft: '1px solid var(--border)',
+            borderRadius: 10,
+            overflow: 'hidden',
+            marginBottom: 48,
+            animation: 'fadeInUp 0.6s ease 0.65s both',
+          }} className="stat-strip">
+            {stats.map((s, i) => (
+              <div key={i} style={{
+                padding: '20px 18px',
+                borderRight: '1px solid var(--border)',
+                borderBottom: '1px solid var(--border)',
+                background: 'rgba(255,255,255,0.015)',
+                transition: 'background 0.2s',
+                cursor: 'default',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = s.color === 'tech' ? 'rgba(59,130,246,0.06)' : 'rgba(245,158,11,0.06)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.015)'}
+              >
+                <div style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 'clamp(1.3rem, 2.5vw, 1.7rem)',
+                  fontWeight: 700,
+                  lineHeight: 1,
+                  marginBottom: 6,
+                  color: s.color === 'tech' ? 'var(--tech-light)' : 'var(--creative-light)',
+                }}>
+                  {s.value}
+                </div>
+                <div style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  marginBottom: 2,
+                  lineHeight: 1.2,
+                }}>
+                  {s.label}
+                </div>
+                <div style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 10,
+                  color: 'var(--text-muted)',
+                  letterSpacing: '0.04em',
+                }}>
+                  {s.sub}
+                </div>
               </div>
             ))}
           </div>
+
+          {/* CTA row */}
+          <div style={{
+            display: 'flex', gap: 12, flexWrap: 'wrap',
+            animation: 'fadeInUp 0.6s ease 0.75s both',
+          }}>
+            <Link to="/builder" className="btn btn-solid" style={{ fontSize: 14, padding: '11px 24px' }}>
+              Explore the Science →
+            </Link>
+            <Link to="/storyteller" className="btn btn-creative" style={{ fontSize: 14, padding: '11px 24px' }}>
+              Read the Story →
+            </Link>
+            <a href="#about" className="btn btn-ghost" style={{ fontSize: 14, padding: '11px 24px' }}>
+              About Me
+            </a>
+          </div>
         </div>
 
-        {/* Hero Image (Desktop only) */}
-        <div className="hero-image-wrapper" style={{
-          position: 'relative',
-          width: '450px',
-          height: '450px',
-          borderRadius: '20px',
-          overflow: 'hidden',
-          boxShadow: '0 0 100px rgba(59,130,246,0.2), 0 0 80px rgba(245,158,11,0.1)',
-          animation: 'float 6s ease-in-out infinite, fadeIn 1.2s ease 0.6s both',
-          border: '1px solid rgba(255,255,255,0.05)',
-          display: 'none',
-        }}>
-          <img src="/hero-bg.png" alt="Data Science and Fiction" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg-void) 0%, transparent 20%, transparent 80%, var(--bg-void) 100%)' }}></div>
-        </div>
-      </div>
-
-      {/* Scroll hint */}
-      <div style={{
-        position: 'absolute',
-        bottom: 32,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 6,
-        animation: 'fadeIn 1.2s ease 1s both',
-      }}>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.2em', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-          Scroll
-        </span>
+        {/* ── Right: floating geometric shapes ── */}
         <div style={{
-          width: 1,
-          height: 40,
-          background: 'linear-gradient(to bottom, var(--text-muted), transparent)',
-          animation: 'float 2s ease-in-out infinite',
-        }} />
+          position: 'relative',
+          width: 320, height: 420,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0,
+        }} className="hero-shapes">
+
+          {/* Large blue orb */}
+          <div style={{
+            position: 'absolute',
+            width: 260, height: 260,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle at 35% 35%, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.04) 50%, transparent 70%)',
+            border: '1px solid rgba(59,130,246,0.12)',
+            animation: 'float 7s ease-in-out infinite',
+          }} />
+
+          {/* Amber ring */}
+          <div style={{
+            position: 'absolute',
+            width: 180, height: 180,
+            borderRadius: '50%',
+            border: '1px solid rgba(245,158,11,0.15)',
+            top: 40, right: 20,
+            animation: 'float 5s ease-in-out 1s infinite',
+          }} />
+
+          {/* Tech diamond */}
+          <div
+            ref={shapeRef1}
+            style={{
+              position: 'absolute',
+              top: 30, right: 30,
+              width: 60, height: 60,
+              background: 'linear-gradient(135deg, rgba(59,130,246,0.5), rgba(59,130,246,0.1))',
+              transform: 'rotate(45deg)',
+              borderRadius: 6,
+              transition: 'transform 0.3s ease',
+              animation: 'floatAlt 6s ease-in-out infinite',
+              boxShadow: '0 0 30px rgba(59,130,246,0.2)',
+            }}
+          />
+
+          {/* Creative diamond */}
+          <div
+            ref={shapeRef2}
+            style={{
+              position: 'absolute',
+              bottom: 50, left: 20,
+              width: 44, height: 44,
+              background: 'linear-gradient(135deg, rgba(245,158,11,0.5), rgba(245,158,11,0.1))',
+              transform: 'rotate(45deg)',
+              borderRadius: 4,
+              transition: 'transform 0.3s ease',
+              animation: 'floatAlt 8s ease-in-out 2s infinite',
+              boxShadow: '0 0 24px rgba(245,158,11,0.2)',
+            }}
+          />
+
+          {/* Small dot cluster */}
+          {[...Array(6)].map((_, i) => (
+            <div key={i} style={{
+              position: 'absolute',
+              width: 4, height: 4,
+              borderRadius: '50%',
+              background: i % 2 === 0 ? 'rgba(96,165,250,0.4)' : 'rgba(245,158,11,0.4)',
+              top: `${20 + i * 12}%`,
+              left: `${10 + (i % 3) * 28}%`,
+              animation: `float ${4 + i}s ease-in-out ${i * 0.4}s infinite`,
+            }} />
+          ))}
+        </div>
       </div>
 
       <style>{`
-        .achieve-card {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 8px 14px;
-          border-radius: 10px;
-          cursor: default;
-          transition: all 0.25s ease;
-          position: relative;
+        @media (max-width: 900px) {
+          .hero-grid { grid-template-columns: 1fr !important; }
+          .hero-shapes { display: none !important; }
+          .stat-strip { grid-template-columns: repeat(2, 1fr) !important; }
         }
-        .achieve-card.tech {
-          background: rgba(59, 130, 246, 0.06);
-          border: 1px solid rgba(59, 130, 246, 0.18);
-        }
-        .achieve-card.tech:hover {
-          background: rgba(59, 130, 246, 0.13);
-          border-color: rgba(59, 130, 246, 0.4);
-          box-shadow: 0 0 18px rgba(59, 130, 246, 0.2);
-          transform: translateY(-1px);
-        }
-        .achieve-card.creative {
-          background: rgba(245, 158, 11, 0.06);
-          border: 1px solid rgba(245, 158, 11, 0.18);
-        }
-        .achieve-card.creative:hover {
-          background: rgba(245, 158, 11, 0.13);
-          border-color: rgba(245, 158, 11, 0.4);
-          box-shadow: 0 0 18px rgba(245, 158, 11, 0.2);
-          transform: translateY(-1px);
-        }
-        .achieve-icon {
-          font-size: 14px;
-          flex-shrink: 0;
-        }
-        .achieve-metric {
-          font-family: var(--font-mono);
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: 0.02em;
-          white-space: nowrap;
-        }
-        .achieve-card.tech .achieve-metric { color: var(--tech-300); }
-        .achieve-card.creative .achieve-metric { color: var(--creative-300); }
-        .achieve-label {
-          font-family: var(--font-sans);
-          font-size: 11px;
-          color: var(--text-muted);
-          white-space: nowrap;
-          padding-left: 6px;
-          border-left: 1px solid rgba(255,255,255,0.08);
-        }
-
-        @media (min-width: 1024px) {
-          .hero-image-wrapper { display: block !important; }
+        @media (max-width: 480px) {
+          .stat-strip { grid-template-columns: 1fr 1fr !important; }
         }
       `}</style>
-    </section>
-  );
+    </div>
+  )
 }

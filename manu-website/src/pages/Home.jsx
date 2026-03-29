@@ -1,62 +1,182 @@
-import { Link } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
 import Hero from '../components/Hero.jsx'
 import About from '../components/About.jsx'
+import Pathways from '../components/Pathways.jsx'
 import Speaking from '../components/Speaking.jsx'
 import Contact from '../components/Contact.jsx'
+import SideNav from '../components/SideNav.jsx'
+
+const homeSections = [
+  { id: 'home',     label: '00' },
+  { id: 'about',    label: '01' },
+  { id: 'pathways', label: '02' },
+  { id: 'speaking', label: '03' },
+  { id: 'contact',  label: '04' },
+]
 
 export default function Home() {
-  return (
-    <main>
-      <Hero />
-      <About />
+  const wrapperRef = useRef(null)
+  const animRef = useRef(false)
+  const currentRef = useRef(0)
+  const dragRef = useRef(0)
+  const snapTimeout = useRef(null)
+
+  useEffect(() => {
+    // Determine screen height for math
+    document.documentElement.style.setProperty('--vh', window.innerHeight);
+
+    // Initial triggers for the first section
+    const sectionsList = wrapperRef.current?.querySelectorAll('.section') || []
+    if (sectionsList[0]) sectionsList[0].classList.add('in-view')
+
+    const updateTransform = (withTransition = false) => {
+      if (!wrapperRef.current) return;
+      const el = wrapperRef.current;
+      if (withTransition) {
+        el.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)';
+      } else {
+        el.style.transition = 'none';
+      }
       
-      {/* Two Entry Boxes for the branches */}
-      <section className="section" style={{ background: 'var(--bg-primary)' }}>
-        <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: 32 }} className="home-branches-grid">
-            
-            {/* The Builder */}
-            <div className="card tech" style={{ padding: 40, border: '1px solid var(--tech-border)' }}>
-              <span className="pill pill-tech" style={{ marginBottom: 16 }}>Data Science & ML</span>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 16 }}>
-                The <span className="glow-tech">Builder</span>
-              </h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', lineHeight: 1.7, marginBottom: 32 }}>
-                Principal Data Scientist at Walmart Global Tech. Creator of PyTorch Tabular and other open-source frameworks shaping modern machine learning.
-              </p>
-              <Link to="/builder" className="btn btn-tech" style={{ display: 'inline-flex' }}>
-                Explore My Work ↗
-              </Link>
-            </div>
+      const vhOffset = currentRef.current * window.innerHeight;
+      const totalOffset = vhOffset + dragRef.current;
+      
+      el.style.transform = `translateY(-${totalOffset}px)`;
+      document.documentElement.style.setProperty('--scroll-raw', totalOffset);
+    };
 
-            {/* The Storyteller */}
-            <div className="card creative" style={{ padding: 40, border: '1px solid var(--creative-border)' }}>
-              <span className="pill pill-creative" style={{ marginBottom: 16 }}>Fiction & Narrative</span>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 16 }}>
-                The <span className="glow-creative">Storyteller</span>
-              </h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', lineHeight: 1.7, marginBottom: 32 }}>
-                Author of the critically acclaimed psychological thriller <em>The Artist</em>. Exploring the depths of human nature through intricate fiction.
-              </p>
-              <Link to="/storyteller" className="btn btn-creative" style={{ display: 'inline-flex' }}>
-                Read the Story ↗
-              </Link>
-            </div>
+    const goToSection = (index) => {
+      if (index < 0 || index >= homeSections.length) {
+        // Snap back if out of bounds
+        dragRef.current = 0;
+        updateTransform(true);
+        return;
+      }
 
-          </div>
+      animRef.current = true;
+      currentRef.current = index;
+      dragRef.current = 0;
+      updateTransform(true);
+
+      // Handle intersection observers manually here since we bypass native scroll
+      sectionsList.forEach((s, i) => {
+        if (i === index) {
+          s.classList.add('in-view')
+        } else {
+          // Delay removal so it slides out visibly before resetting
+          setTimeout(() => {
+            s.classList.remove('in-view')
+          }, 850)
+        }
+      })
+
+      setTimeout(() => {
+        animRef.current = false;
+      }, 850);
+    };
+
+    const handleWheel = (e) => {
+      e.preventDefault(); // Stop native scrolling entirely
+      if (animRef.current) return; // Ignore input while transitioning
+
+      // Extremely high artificial resistance (10% of trackpad movement)
+      const resistance = 0.12; 
+      dragRef.current += (e.deltaY * resistance);
+
+      const THRESHOLD = 65; // User must "drag" 65 virtual pixels to trigger snap
+
+      // Restrict pull limits visually
+      if (dragRef.current > 120) dragRef.current = 120;
+      if (dragRef.current < -120) dragRef.current = -120;
+      if (currentRef.current === 0 && dragRef.current < 0) dragRef.current = Math.max(dragRef.current, -20);
+      if (currentRef.current === homeSections.length - 1 && dragRef.current > 0) dragRef.current = Math.min(dragRef.current, 20);
+
+      updateTransform(false); // Move slightly with no transition
+
+      // Check threshold crossing
+      if (dragRef.current > THRESHOLD) {
+        goToSection(currentRef.current + 1);
+        return;
+      } else if (dragRef.current < -THRESHOLD) {
+        goToSection(currentRef.current - 1);
+        return;
+      }
+
+      // If user stops scrolling before threshold, snap back to 0
+      clearTimeout(snapTimeout.current);
+      snapTimeout.current = setTimeout(() => {
+        if (!animRef.current && dragRef.current !== 0) {
+          dragRef.current = 0;
+          updateTransform(true);
+        }
+      }, 120);
+    };
+
+    const handleTouchStart = (e) => {
+      if (animRef.current) return;
+      wrapperRef.current.touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e) => {
+      e.preventDefault(); // prevent native scroll
+      if (animRef.current || !wrapperRef.current.touchStartY) return;
+      
+      const deltaY = wrapperRef.current.touchStartY - e.touches[0].clientY;
+      const resistance = 0.3; // Less resistance for native touch
+      dragRef.current = deltaY * resistance;
+
+      const THRESHOLD = 80;
+
+      if (currentRef.current === 0 && dragRef.current < 0) dragRef.current = Math.max(dragRef.current, -30);
+      if (currentRef.current === homeSections.length - 1 && dragRef.current > 0) dragRef.current = Math.min(dragRef.current, 30);
+
+      updateTransform(false);
+
+      if (dragRef.current > THRESHOLD) {
+        goToSection(currentRef.current + 1);
+        wrapperRef.current.touchStartY = null;
+      } else if (dragRef.current < -THRESHOLD) {
+        goToSection(currentRef.current - 1);
+        wrapperRef.current.touchStartY = null;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (animRef.current || dragRef.current === 0) return;
+      wrapperRef.current.touchStartY = null;
+      dragRef.current = 0;
+      updateTransform(true); // Snap back
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd);
+
+    // Initialize parallax css variables immediately
+    updateTransform(false);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      clearTimeout(snapTimeout.current);
+    }
+  }, [])
+
+  return (
+    <>
+      <SideNav sections={homeSections} />
+      <main className="fullpage-wrapper">
+        <div className="sections-container" ref={wrapperRef}>
+          <section id="home"     className="section"><Hero /></section>
+          <section id="about"    className="section"><About /></section>
+          <section id="pathways" className="section"><Pathways /></section>
+          <section id="speaking" className="section"><Speaking /></section>
+          <section id="contact"  className="section"><Contact /></section>
         </div>
-
-        <style>{`
-          @media (max-width: 768px) {
-            .home-branches-grid {
-              grid-template-columns: 1fr !important;
-            }
-          }
-        `}</style>
-      </section>
-
-      <Speaking />
-      <Contact />
-    </main>
+      </main>
+    </>
   )
 }
