@@ -21,6 +21,7 @@
 12. [Online Presence & Links](#12-online-presence--links)
 13. [Photography & Visual Assets](#13-photography--visual-assets)
 14. [Bio Versions](#14-bio-versions)
+15. [Website Content Plan](#15-website-content-plan)
 
 ---
 
@@ -33,7 +34,7 @@
 | Email | manujosephv@gmail.com |
 | Location | Bangalore, India |
 | Origin | Trivandrum, Kerala, India |
-| Current Role | Staff Data Scientist — Walmart Global Tech India |
+| Current Role | Principal Data Scientist — Walmart Global Tech India |
 | Personal Identity | Father · Husband · Data Scientist · Fiction Author · Podcast Creator |
 | Personal Site | manu-joseph.com |
 
@@ -47,14 +48,14 @@
 ## 2. Professional Career
 
 ### Current Role
-**Staff Data Scientist — Walmart Global Tech India**
+**Principal Data Scientist — Walmart Global Tech India**
 Working on large-scale ML systems powering one of the world's largest retail operations.
 
 ### Career History
 
 | Role | Organisation | Focus |
 |---|---|---|
-| Staff Data Scientist | Walmart Global Tech India | Large-scale ML, Retail AI |
+| Principal Data Scientist | Walmart Global Tech India | Large-scale ML, Retail AI |
 | Head of Applied Research | Thoucentric | Deep Learning Practice, Applied Research |
 | Lead — Deep Learning Practice | Thoucentric | Demand Forecasting, DL for Tabular Data |
 | ML / Analytics Consulting | Various | Fortune 500 Digital & AI Transformations |
@@ -155,6 +156,8 @@ Enhanced the Language Model section of the NLTK library:
 ---
 
 ## 5. Research Papers
+
+**Impact Metrics:** 6 Publications · 98 Citations · h-index: 4 · 13 Highly Influential Citations
 
 All published on ArXiv.
 
@@ -321,14 +324,20 @@ A respected ML resource covering:
 **URL:** https://medium.com/@manujosephv
 Active contributor. Accessible ML tutorials for a wider audience.
 
+### Features & Interviews
+
+- **DPhi Expert Talks:** [Podcast Appearance](https://www.youtube.com/watch?v=FSE3TyBnH5g) — Interview as a self-taught Data Scientist and creator of PyTorch Tabular.
+- **Packt Partnerships:** [Interview with Manu Joseph](https://partnerships.packt.com/interview-with-manu-joseph/) — Discussing Machine Learning, Time Series Forecasting, and writing his book.
+
 ---
 
 ## 10. Speaking & Conferences
 
 | Event | Year | Topic | Link |
 |---|---|---|---|
-| MLDS 2026 (upcoming) | 2026 | Deep Learning for Tabular Data | https://mlds.analyticsindiamag.com/speaker/manu-joseph/ |
-| MLDS 2025 | 2025 | Time Series Forecasting | https://mlds.analyticsindiamag.com/speaker/manu-joseph-2/ |
+| Packt Workshop (Upcoming - May 2) | 2026 | Modern Time Series Forecasting with Python (Hands-on) | [Eventbrite](https://www.eventbrite.com/e/time-series-forecasting-in-python-end-to-end-practice-tickets-1985809805585?aff=ma) |
+| MLDS 2023 | 2023 | Speaker | https://mlds.analyticsindiamag.com/speaker/manu-joseph/ |
+| DPhi Session | 2022 | Zero-Shot Text Classification (NLP) | [Watch on YouTube](https://www.youtube.com/watch?v=TlpqrI2Pdw0) |
 
 **MLDS** = Machine Learning Developers Summit, organised by Analytics India Magazine — India's premier ML conference.
 
@@ -338,8 +347,8 @@ Active contributor. Accessible ML tutorials for a wider audience.
 
 | Award | Organisation | Notes |
 |---|---|---|
-| **40 Under 40 Data Scientist** | Analytics India Magazine (AIM) | Among India's most influential data scientists under 40 |
-| **AIM Data Science Journey Feature** | Analytics India Magazine | Spotlight article on PyTorch Tabular as a landmark open-source project |
+| **40 Under 40 Data Scientists (2024)** | Analytics India Magazine (AIM) | Among India's most influential data scientists under 40. [Read Announcement](https://analyticsindiamag.com/ai-highlights/the-40-under-40-data-scientists-awards-2024-meet-the-winners) |
+| **AIM Data Science Journey Feature** | Analytics India Magazine | Spotlight article on PyTorch Tabular as a landmark open-source project. [Read Feature](https://analyticsindiamag.com/ai-features/data-science-journey-of-manu-joseph-the-creator-of-pytorch-tabular) |
 | **Critical Literary Acclaim** | Dr. Shashi Tharoor, New Indian Express | Highest-profile endorsements for a debut thriller in Indian publishing |
 
 ---
@@ -394,13 +403,13 @@ Active contributor. Accessible ML tutorials for a wider audience.
 ## 14. Bio Versions
 
 ### Short Bio (50 words)
-Manu Joseph is a Staff Data Scientist at Walmart Global Tech and the creator of PyTorch Tabular — a widely-adopted open-source framework for deep learning on tabular data. He is also the author of *The Artist*, a critically acclaimed psychological thriller, and the former creator of *Little Pajama Tales*, a children's bedtime podcast that reached families in 20+ countries.
+Manu Joseph is a Principal Data Scientist at Walmart Global Tech and the creator of PyTorch Tabular — a widely-adopted open-source framework for deep learning on tabular data. He is also the author of *The Artist*, a critically acclaimed psychological thriller, and the former creator of *Little Pajama Tales*, a children's bedtime podcast that reached families in 20+ countries.
 
 ### Medium Bio (100 words)
-Manu Joseph bridges two distinct worlds with equal intensity. By day, he is a Staff Data Scientist at Walmart Global Tech India with 15+ years of experience in machine learning, and the creator of PyTorch Tabular — a framework used by ML practitioners worldwide. He has published 5 ArXiv papers, co-authored a bestselling Packt book on time series forecasting, and been named a 40 Under 40 Data Scientist by Analytics India Magazine. Beyond the data, he is Manu J — author of *The Artist*, a critically acclaimed psychological thriller praised by Dr. Shashi Tharoor, and the creator of *Little Pajama Tales*, a children's bedtime podcast that reached families across 20+ countries before concluding.
+Manu Joseph bridges two distinct worlds with equal intensity. By day, he is a Principal Data Scientist at Walmart Global Tech India with 15+ years of experience in machine learning, and the creator of PyTorch Tabular — a framework used by ML practitioners worldwide. He has published 5 ArXiv papers, co-authored a bestselling Packt book on time series forecasting, and been named a 40 Under 40 Data Scientist by Analytics India Magazine. Beyond the data, he is Manu J — author of *The Artist*, a critically acclaimed psychological thriller praised by Dr. Shashi Tharoor, and the creator of *Little Pajama Tales*, a children's bedtime podcast that reached families across 20+ countries before concluding.
 
 ### Long Bio (200 words)
-Manu Joseph is a Staff Data Scientist at Walmart Global Tech India and one of the most visible names in the Indian ML open-source community. Over 15+ years, he has applied AI and analytics to Fortune 500 digital transformations — from supply chain demand forecasting to cutting-edge deep learning research.
+Manu Joseph is a Principal Data Scientist at Walmart Global Tech India and one of the most visible names in the Indian ML open-source community. Over 15+ years, he has applied AI and analytics to Fortune 500 digital transformations — from supply chain demand forecasting to cutting-edge deep learning research.
 
 He is best known as the creator of **PyTorch Tabular**, a unified framework that makes deep learning on tabular data as accessible as scikit-learn. The project has amassed 2,000+ GitHub stars and is downloaded thousands of times monthly. He has published 5 research papers on ArXiv, co-authored *Modern Time Series Forecasting with Python* (Packt, 2nd Ed.), and been recognised as a 40 Under 40 Data Scientist by Analytics India Magazine.
 
@@ -410,13 +419,122 @@ Originally from Trivandrum, Kerala, now based in Bangalore. Father. Husband. Per
 
 ---
 
-## Notes & Gaps
+## 15. Website Content Plan
 
-- **Little Pajama Tales** — Concluded. Confirm full episode list for archival purposes. Decide how prominently to feature it on the website (suggested: "Past Projects" card)
+> Documents the agreed structure, copy decisions, and content for **manu-joseph.com** (React + Vite, deployable to Vercel). The built project lives at `manu-website/` in this folder.
+
+### Agreed Section Order
+
+| # | Section | Status | Notes |
+|---|---|---|---|
+| 1 | **Nav** | ✅ Built | Floating, transparent → frosted on scroll. Links: About, Data Science, The Artist, Speaking, Contact |
+| 2 | **Hero** | ✅ Built | Particle canvas, name, dual role tags, 4 key stats, CTAs to each world |
+| 3 | **About** | ✅ Built | Photo + bio + Two Worlds split card (Builder / Storyteller). Past Projects row to be added below. |
+| 4 | **Data Science** | ✅ Built | PyTorch Tabular featured, project cards, papers table, book, blog |
+| 5 | **The Artist** | ✅ Built | Book cover, characters, excerpt, all 3 critical reviews |
+| 6 | **Speaking & Recognition** | ✅ Built | MLDS talks + 3 awards |
+| 7 | **Contact** | ✅ Built | Email CTA + all social links grid |
+| 8 | **Footer** | ✅ Built | Minimal, links, dual brand mark |
+
+---
+
+### Past Projects — Little Pajama Tales Card
+
+**Decision:** Add a "Past Projects" row to the About section, below the two main world cards (Builder / Storyteller). Muted styling to signal "concluded" without hiding it.
+
+**Placement:** About section → below the two-worlds split grid, above the section end.
+
+**Card content to use:**
+
+| Field | Copy |
+|---|---|
+| Label | `Past Project` |
+| Icon | 🎙️ |
+| Title | Little Pajama Tales |
+| Tagline | *"Cozy Adventures, Big Values"* |
+| Description | A children's bedtime podcast — AI-assisted 5-minute fairy tales for young dreamers. Reached 1,000+ listeners across 20+ countries. |
+| Status note | Concluded · Available on Acast |
+| Link | https://shows.acast.com/littlepajamatales |
+| Styling | Muted — no bright accent, softer border, `var(--text-muted)` for the label. Should feel like a fond memory, not a live product. |
+
+**Rationale for including it:** Shows that Manu builds for love and curiosity, not just career. A data scientist who used AI to create children's content, reached a global audience as a solo creator, and then moved on. No CV captures that. It makes the whole profile more human.
+
+---
+
+### Images — What Goes Where
+
+| Image file | Section | Notes |
+|---|---|---|
+| `public/portrait.jpg` | About section | Close-up red-wall portrait. Crop to portrait ratio (4:5). |
+| `public/book-cover.jpg` | The Artist section | Rorschach cover. Floats with CSS animation. |
+
+Images are not yet added — site shows styled fallbacks. Drop files into `manu-website/public/` to activate.
+
+---
+
+### Copy Decisions & Tone Notes
+
+- **Hero tagline split:** "Principal Data Scientist" (blue, monospace) × "Fiction Author" (amber, serif italic) — the visual contrast is intentional
+- **Data Science world:** Lead with PyTorch Tabular. Let the stats speak. Don't over-explain the research papers.
+- **Author world:** Lead with the excerpt — show don't tell. Let Shashi Tharoor's quote do the heavy lifting.
+- **Little Pajama Tales:** Keep it light and warm. One card, no sub-section. Let the 20+ countries stat do the work.
+- **Overall tone:** Confident but not boastful. The work speaks — copy just frames it.
+
+---
+
+### Deployment Checklist
+
+- [ ] Run `npm install` in `manu-website/`
+- [ ] Add `portrait.jpg` to `manu-website/public/`
+- [ ] Add `book-cover.jpg` to `manu-website/public/`
+- [ ] Add Little Pajama Tales past project card to `About.jsx`
+- [ ] Test locally with `npm run dev`
+- [ ] Deploy with `npx vercel` or connect GitHub repo to Vercel dashboard
+- [ ] Point custom domain `manu-joseph.com` to Vercel
+
+---
+
+- **Little Pajama Tales** — Concluded. Featured on website as a "Past Projects" card in the About section (decided). Confirm full episode list for archival purposes.
 - **Twitter / X** — Handle `@manujosephsan` — confirm this is active
 - **Google Scholar** — Confirm citation count
 - **The Artist** — Confirm exact publication date and whether paperback is available
 - **PyTorch Tabular** — Confirm current GitHub star count (was 2K+ at time of writing)
+
+---
+
+---
+
+## 16. Patents & Current Research (from Resume)
+
+### Patents Filed
+
+| Patent | Filed | Description |
+|---|---|---|
+| **ML-based Attribution System** | Dec 2023 – Present | A novel causal ML model (Walmart-scale, item-week level) attributing total sales to marketing/pricing interventions. Distilled into transfer functions for macro/micro impact, with Genetic Algorithm-based non-linear budget optimization deployed as a Streamlit app. |
+| **Novel Conformal Prediction for GBDT Models** | Feb 2025 – Mar 2025 | A novel Conformal Prediction technique for adaptive prediction intervals using the local leaf structure of GBDT trees. Re-imagines leaf trajectory as a graph; uses a GNN for residual prediction. |
+
+### Current & Recent Research Projects
+
+#### Foundational Time Series Forecasting Model (Dec 2024 – Present)
+- **Architecture:** MAMBA-based foundational model for zero-shot time series forecasting
+- **Performance:** Outperforms equally sized foundational models; significantly faster and lighter
+- **Scale:** 10K time series can be forecasted in 1 hour on 1 V100 GPU
+- **Features:** Easy-to-use packaged library with internal GCS-based model registry (Hugging Face–style hub), fine-tuning on specific series, support for exogenous variables
+- **Status:** Active — researching post-training techniques to improve performance via test-time compute
+
+#### Novel Deep Learning Architecture for Tabular Data (Mar 2022 – Aug 2022)
+- Re-imagined RNNs to process tabular data and learn efficient representations
+- Derived a lightweight architecture for tabular classification and regression
+- Benchmarked against GBDTs and other DL models, demonstrated superiority
+
+#### Multi-stage Recommender System for Sellers (Jul 2023 – Feb 2024)
+- Recommendation system for Walmart Seller Center — recommends next best actions to improve seller sales
+- Adapted VICReg contrastive loss for negative-sampling-free Two-Tower Retriever
+- Cascaded retrieval + ranking architecture for efficient inference
+
+#### Domain Adaptation for Predictive Maintenance (Jun 2022 – Aug 2022)
+- Encoder-decoder with bottlenecks to learn domain-agnostic manifold
+- Predicts Remaining Useful Life (RUL) on target datasets without any labels
 
 ---
 

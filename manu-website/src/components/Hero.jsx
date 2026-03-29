@@ -93,7 +93,7 @@ export default function Hero() {
               fontFamily: 'var(--font-mono)', fontSize: 'clamp(0.8rem, 1.8vw, 0.95rem)',
               color: 'var(--tech-light)', letterSpacing: '0.04em',
             }}>
-              Staff Data Scientist
+              Principal Data Scientist
             </span>
             <span style={{ color: 'var(--border-mid)', fontSize: 18 }}>·</span>
             <span style={{

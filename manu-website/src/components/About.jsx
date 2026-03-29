@@ -79,16 +79,16 @@ export default function About() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <p style={{ fontSize: '1.05rem', color: 'var(--text-secondary)', lineHeight: 1.8, animation: 'fadeInUp 0.8s ease 0.3s both' }}>
-              I'm a <strong style={{ color: 'var(--text-primary)' }}>Staff Data Scientist at Walmart Global Tech India</strong>,
+              I'm a <strong style={{ color: 'var(--text-primary)' }}>Principal Data Scientist at Walmart Global Tech India</strong>,
               where I work on machine learning systems at the scale of one of the world's largest retailers.
-              Over 15+ years I've applied AI to Fortune 500 digital transformations — from supply chain
+              Over <strong style={{ color: 'var(--text-primary)' }}>15+</strong> years I've applied AI to Fortune 500 digital transformations — from supply chain
               demand forecasting to deep learning research.
             </p>
             <p style={{ fontSize: '1.05rem', color: 'var(--text-secondary)', lineHeight: 1.8, animation: 'fadeInUp 0.8s ease 0.4s both' }}>
-              I'm best known as the creator of{' '}
-              <strong style={{ color: 'var(--tech-light)' }}>PyTorch Tabular</strong> — a framework
-              that makes deep learning on tabular data feel like scikit-learn. When the laptop closes,
-              I pick up a pen. My debut psychological thriller{' '}
+              In the tech space, I'm known for two things: my work as a deep learning researcher and creator of the{' '}
+              <strong style={{ color: 'var(--tech-light)' }}>PyTorch Tabular</strong> framework, and as a <strong style={{ color: 'var(--tech-light)' }}>leading 
+              voice in time series forecasting</strong>, having authored a best-selling book on the subject now in its second edition. 
+              When the laptop closes, I pick up a pen. My debut psychological thriller{' '}
               <em style={{ color: 'var(--creative-light)', fontWeight: 600 }}>The Artist</em> was praised
               by Dr. Shashi Tharoor as "a fluently written and blazingly paced thriller."
             </p>
