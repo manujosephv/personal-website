@@ -1,18 +1,18 @@
 const reviews = [
   {
     quote: "A fluently written and blazingly paced thriller, Manu J's The Artist marks an impressive debut.",
-    full: "The darkness engulfing these twisted, scarred men and women isn't external — it's internal, a manifestation of their own sordid psyches.",
+    full: "As the characters blaze a bloody trail, the reader realises a searing fact: the darkness engulfing these twisted, scarred men and women isn't external — it's internal, a manifestation of their own sordid psyches.",
     author: 'Dr. Shashi Tharoor',
     role: 'Esteemed Indian Politician, Author & Former Diplomat',
   },
   {
-    quote: 'Manu has come up with a surprisingly cohesive narration that seamlessly weaves subdued undertones with graphic murderous violence, rendered with sickeningly artistic hues.',
+    quote: 'For a debutant, Manu has come up with a surprisingly cohesive narration that seamlessly weaves subdued undertones with graphic murderous violence, rendered with sickeningly artistic hues.',
     full: 'Introduces a promising new writer to the literary scene.',
     author: 'The New Indian Express',
     role: 'National Newspaper',
   },
   {
-    quote: 'Manu Joseph exhibits a remarkable command of fiction, weaving intricate details that captivate the reader\'s imagination without overwhelming the story\'s essence.',
+    quote: 'Manu Joseph exhibits a remarkable command of fiction, weaving intricate details that captivate the reader\'s imagination without overwhelming the story\'s essence. His deep understanding of the human psyche is remarkable.',
     full: 'The character of Manas reflects a profound exploration of the human self, echoing the tragic visions found in the Mahabharata and Greek tragedies.',
     author: 'Prof. N. Manu Chakravarthy',
     role: 'Writer, Film Critic & Cultural Theorist',
@@ -45,25 +45,44 @@ const characters = [
 
 const themes = ['Serial Killer', 'Police Procedural', 'Dark Past', 'Family', 'Internal Struggle', 'Multiple POVs', 'Cat & Mouse']
 
+const podcastLinks = [
+  { label: 'Spotify', href: 'https://open.spotify.com/show/3ydiII0tUIgJcTEw7Di5WX', icon: '🎵' },
+  { label: 'Apple Podcasts', href: 'https://podcasts.apple.com/gb/podcast/little-pajama-tales/id1707720797', icon: '🎙️' },
+  { label: 'Amazon Music', href: 'https://www.amazon.in/Little-Pajama-Tales/dp/B0CJ591Q5W', icon: '🛒' },
+  { label: 'Acast', href: 'https://feeds.acast.com/public/shows/littlepajamatales', icon: '📻' },
+]
+
 export default function Author() {
   return (
     <div className="container" style={{ paddingTop: 80, paddingBottom: 80, width: '100%' }}>
 
-      {/* Header */}
-      <p className="eyebrow creative">03 — The Storyteller</p>
-      <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 56 }}>
-        Psychological Fiction.<br />
-        <span style={{ color: 'var(--creative-light)', fontStyle: 'italic' }}>The Artist.</span>
-      </h2>
+      {/* ── Hero Intro ── */}
+      <p className="eyebrow creative" style={{ marginBottom: 16 }}>The Storyteller</p>
+      <h1 style={{
+        fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 700, lineHeight: 1.1,
+        letterSpacing: '-0.03em', marginBottom: 24,
+      }}>
+        When the laptop closes,{' '}
+        <span style={{ color: 'var(--creative-light)', fontStyle: 'italic' }}>I pick up a pen.</span>
+      </h1>
+      <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.85, maxWidth: 680, marginBottom: 16 }}>
+        Writing under the pen name <strong style={{ color: 'var(--text-primary)' }}>Manu J</strong>, I published
+        my debut psychological thriller <em style={{ color: 'var(--creative-light)' }}>The Artist</em> in 2024.
+        Before that, I spent a year making bedtime stories for children. Somewhere between Python and prose, I
+        found that the best stories — like the best models — are built on a deep understanding of people.
+      </p>
+      <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.85, maxWidth: 680, marginBottom: 56 }}>
+        I don't write to escape the world of data. I write because the questions that fascinate me most —
+        about motive, morality, and the stories we tell ourselves — are best explored in fiction.
+      </p>
 
-      {/* Hero row — book + description */}
+      {/* ── Book Hero ── */}
       <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: 56, alignItems: 'start', marginBottom: 72 }} className="author-hero">
 
         {/* Book cover */}
         <div>
           <div style={{
-            borderRadius: 12,
-            overflow: 'hidden',
+            borderRadius: 12, overflow: 'hidden',
             boxShadow: '0 24px 60px rgba(0,0,0,0.6), 0 0 40px rgba(245,158,11,0.08)',
             animation: 'float 5s ease-in-out infinite',
             border: '1px solid rgba(245,158,11,0.15)',
@@ -91,6 +110,10 @@ export default function Author() {
               className="btn btn-creative" style={{ justifyContent: 'center', fontSize: 14 }}>
               Buy the Book ↗
             </a>
+            <a href="https://www.amazon.in/stores/Manu-Joseph/author/B0BL85MBVW" target="_blank" rel="noopener noreferrer"
+              className="btn btn-ghost" style={{ justifyContent: 'center', fontSize: 14 }}>
+              Amazon India ↗
+            </a>
             <a href="https://www.instagram.com/author_manu_j/" target="_blank" rel="noopener noreferrer"
               className="btn btn-ghost" style={{ justifyContent: 'center', fontSize: 14 }}>
               @author_manu_j ↗
@@ -103,6 +126,7 @@ export default function Author() {
           <div style={{ marginBottom: 24 }}>
             <span className="pill pill-creative" style={{ marginRight: 8 }}>Paper Towns · 2024</span>
             <span className="pill pill-neutral">Debut Novel</span>
+            <span className="pill pill-neutral" style={{ marginLeft: 8 }}>Psychological Thriller</span>
           </div>
 
           <p style={{ fontSize: '1.05rem', color: 'var(--text-secondary)', lineHeight: 1.85, marginBottom: 20 }}>
@@ -127,7 +151,7 @@ export default function Author() {
               "A fluently written and blazingly paced thriller, Manu J's The Artist marks an impressive debut."
             </p>
             <div className="quote-author">Dr. Shashi Tharoor</div>
-            <div className="quote-role">Esteemed Indian Politician, Author & Former Diplomat</div>
+            <div className="quote-role">Esteemed Indian Politician, Author &amp; Former Diplomat</div>
           </div>
         </div>
       </div>
@@ -187,7 +211,7 @@ export default function Author() {
 
       {/* All reviews */}
       <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: 24 }}>Critical Acclaim</h3>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 64 }}>
         {reviews.map(r => (
           <div key={r.author} className="quote-block">
             <p className="quote-text">"{r.quote}"</p>
@@ -200,22 +224,39 @@ export default function Author() {
 
       {/* Little Pajama Tales */}
       <div style={{
-        marginTop: 56,
         background: 'var(--bg-card)',
         border: '1px solid var(--border)',
-        borderRadius: 14, padding: 32,
+        borderRadius: 14, padding: '32px 36px',
       }}>
-        <span className="pill pill-neutral" style={{ marginBottom: 12 }}>Past Project</span>
-        <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: 12 }}>Little Pajama Tales</h3>
-        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: 20, maxWidth: 640 }}>
-          "Cozy Adventures, Big Values." An AI-assisted children's bedtime podcast I created that reached
-          families in 20+ countries across 1,000+ downloads. Imaginative 5-minute stories built to enrich
-          bedtime routines and spark children's imagination. Now concluded.
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
+          <span className="pill pill-neutral">🎙️ Past Project</span>
+          <span className="pill pill-neutral" style={{ fontSize: 11, color: 'var(--text-muted)' }}>Concluded</span>
+        </div>
+        <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: 6 }}>Little Pajama Tales</h3>
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--creative-light)', fontStyle: 'italic', marginBottom: 16 }}>
+          "Cozy Adventures, Big Values."
         </p>
-        <a href="https://shows.acast.com/littlepajamatales" target="_blank" rel="noopener noreferrer"
-          className="btn btn-ghost">
-          View on Acast ↗
-        </a>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
+          {[{ v: '1,000+', l: 'Downloads' }, { v: '20+', l: 'Countries' }].map(s => (
+            <div key={s.l} style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: '1.1rem', color: 'var(--text-primary)' }}>{s.v}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.l}</span>
+            </div>
+          ))}
+        </div>
+        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: 24, maxWidth: 640 }}>
+          An AI-assisted children's bedtime podcast I created — imaginative 5-minute fairy tales for young dreamers,
+          designed to enrich bedtime routines and impart values like honesty, courage, and kindness.
+          Reached families across 20+ countries before concluding.
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+          {podcastLinks.map(l => (
+            <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
+              className="btn btn-ghost" style={{ fontSize: 13 }}>
+              {l.icon} {l.label} ↗
+            </a>
+          ))}
+        </div>
       </div>
 
       <style>{`
