@@ -1,0 +1,407 @@
+/* ============================================================
+   DESIGN SYSTEM — Manu Joseph Personal Website
+   Dark & Cinematic Theme
+   ============================================================ */
+
+:root {
+  /* Backgrounds */
+  --bg-void: #06060d;
+  --bg-primary: #09090f;
+  --bg-secondary: #0d1117;
+  --bg-card: #10151f;
+  --bg-card-hover: #171e2e;
+  --bg-glass: rgba(16, 21, 31, 0.7);
+
+  /* Text */
+  --text-primary: #f0f2f8;
+  --text-secondary: #8892a4;
+  --text-muted: #4a5468;
+
+  /* Data Science accent — electric blue */
+  --tech-500: #3b82f6;
+  --tech-400: #60a5fa;
+  --tech-300: #93c5fd;
+  --tech-glow: rgba(96, 165, 250, 0.12);
+  --tech-glow-strong: rgba(96, 165, 250, 0.25);
+  --tech-border: rgba(96, 165, 250, 0.2);
+
+  /* Author accent — warm amber */
+  --creative-500: #f59e0b;
+  --creative-400: #fbbf24;
+  --creative-300: #fcd34d;
+  --creative-glow: rgba(245, 158, 11, 0.1);
+  --creative-glow-strong: rgba(245, 158, 11, 0.22);
+  --creative-border: rgba(245, 158, 11, 0.2);
+
+  /* Borders & Dividers */
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+
+  /* Fonts */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Spacing */
+  --section-gap: 140px;
+  --card-radius: 16px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--tech-500);
+  color: #fff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
+
+.display { font-family: var(--font-display); }
+.mono { font-family: var(--font-mono); }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes pulse-glow-tech {
+  0%, 100% { box-shadow: 0 0 0 0 var(--tech-glow-strong); }
+  50%       { box-shadow: 0 0 40px 10px var(--tech-glow); }
+}
+
+@keyframes pulse-glow-creative {
+  0%, 100% { box-shadow: 0 0 0 0 var(--creative-glow-strong); }
+  50%       { box-shadow: 0 0 40px 10px var(--creative-glow); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes scan {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ============================================================
+   LAYOUT CONTAINERS
+   ============================================================ */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  padding: var(--section-gap) 0;
+  position: relative;
+}
+
+/* ============================================================
+   SECTION LABELS
+   ============================================================ */
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-eyebrow.tech { color: var(--tech-400); }
+.section-eyebrow.creative { color: var(--creative-400); }
+.section-eyebrow.neutral { color: var(--text-muted); }
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+}
+
+.card.tech:hover {
+  border-color: var(--tech-border);
+  box-shadow: 0 4px 40px var(--tech-glow);
+}
+
+.card.creative:hover {
+  border-color: var(--creative-border);
+  box-shadow: 0 4px 40px var(--creative-glow);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-tech {
+  background: var(--tech-glow-strong);
+  color: var(--tech-300);
+  border: 1px solid var(--tech-border);
+}
+.btn-tech:hover {
+  background: var(--tech-500);
+  color: #fff;
+  box-shadow: 0 0 24px var(--tech-glow-strong);
+}
+
+.btn-creative {
+  background: var(--creative-glow-strong);
+  color: var(--creative-300);
+  border: 1px solid var(--creative-border);
+}
+.btn-creative:hover {
+  background: var(--creative-500);
+  color: #000;
+  box-shadow: 0 0 24px var(--creative-glow-strong);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-hover);
+}
+.btn-outline:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+/* ============================================================
+   NOISE TEXTURE OVERLAY
+   ============================================================ */
+
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   GRADIENT DIVIDERS
+   ============================================================ */
+
+.gradient-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-hover), transparent);
+  margin: 0 auto;
+}
+
+/* ============================================================
+   GLOW TEXT
+   ============================================================ */
+
+.glow-tech {
+  color: var(--tech-400);
+  text-shadow: 0 0 40px var(--tech-glow-strong);
+}
+.glow-creative {
+  color: var(--creative-400);
+  text-shadow: 0 0 40px var(--creative-glow-strong);
+}
+
+/* ============================================================
+   PILL / TAG
+   ============================================================ */
+
+.pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font-mono);
+}
+.pill-tech {
+  background: var(--tech-glow);
+  color: var(--tech-300);
+  border: 1px solid var(--tech-border);
+}
+.pill-creative {
+  background: var(--creative-glow);
+  color: var(--creative-300);
+  border: 1px solid var(--creative-border);
+}
+.pill-neutral {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+/* ============================================================
+   STAT BOX
+   ============================================================ */
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 6px;
+}
+
+/* ============================================================
+   QUOTE BLOCK
+   ============================================================ */
+
+.quote-block {
+  border-left: 3px solid var(--creative-500);
+  padding: 20px 24px;
+  background: var(--creative-glow);
+  border-radius: 0 12px 12px 0;
+}
+
+.quote-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.quote-author {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--creative-400);
+}
+
+.quote-role {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  :root {
+    --section-gap: 80px;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+  }
+}

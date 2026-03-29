@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accomplishment Section — Design Concepts</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a12;
+    color: #e2e8f0;
+    font-family: -apple-system, 'Inter', sans-serif;
+    padding: 40px 32px 80px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #94a3b8;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .page-subtitle {
+    font-size: 13px;
+    color: #475569;
+    margin-bottom: 48px;
+    font-family: monospace;
+  }
+
+  /* ---- shared concept wrapper ---- */
+  .concept {
+    margin-bottom: 60px;
+  }
+  .concept-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .concept-letter {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .letter-a { background: rgba(96,165,250,0.15); color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); }
+  .letter-b { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+  .letter-c { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .concept-name { font-size: 16px; font-weight: 700; color: #f1f5f9; }
+  .concept-desc { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+  .demo-bg {
+    background: #0d0d1a;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 36px 32px;
+  }
+
+  /* context: "what comes before" */
+  .hero-context {
+    margin-bottom: 24px;
+    opacity: 0.45;
+  }
+  .hero-context .name {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1;
+    color: #f1f5f9;
+    letter-spacing: -0.02em;
+  }
+  .hero-context .tags {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    align-items: center;
+  }
+  .tag-tech {
+    font-size: 11px; font-weight: 600;
+    padding: 5px 12px; border-radius: 6px;
+    background: rgba(96,165,250,0.08);
+    border: 1px solid rgba(96,165,250,0.25);
+    color: #60a5fa;
+    font-family: monospace;
+  }
+  .tag-creative {
+    font-size: 11px; font-weight: 600;
+    padding: 5px 12px; border-radius: 6px;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.25);
+    color: #f59e0b;
+    font-style: italic;
+  }
+  .divider-x { color: #334155; }
+
+  /* =============================================
+     OPTION A — BENTO MINI GRID
+  ============================================= */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 10px;
+  }
+  .bento-card {
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 82px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+  .bento-card:hover {
+    transform: translateY(-2px);
+  }
+  .bento-card.wide { grid-column: span 2; }
+  .bento-card.tech {
+    background: rgba(96,165,250,0.05);
+    border: 1px solid rgba(96,165,250,0.16);
+  }
+  .bento-card.tech:hover { box-shadow: 0 0 24px rgba(96,165,250,0.15); }
+  .bento-card.creative {
+    background: rgba(245,158,11,0.05);
+    border: 1px solid rgba(245,158,11,0.16);
+  }
+  .bento-card.creative:hover { box-shadow: 0 0 24px rgba(245,158,11,0.15); }
+  .bento-card.neutral {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .bento-icon {
+    font-size: 15px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .bento-metric {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-family: monospace;
+  }
+  .bento-card.tech .bento-metric { color: #93c5fd; }
+  .bento-card.creative .bento-metric { color: #fcd34d; }
+  .bento-card.neutral .bento-metric { color: #e2e8f0; }
+  .bento-label {
+    font-size: 10px;
+    color: #64748b;
+    margin-top: 5px;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+  .bento-card.wide .bento-metric { font-size: 22px; }
+  .bento-glow {
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .bento-card.tech .bento-glow { background: radial-gradient(circle, rgba(96,165,250,0.12) 0%, transparent 70%); }
+  .bento-card.creative .bento-glow { background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%); }
+
+  /* =============================================
+     OPTION B — SCROLLING MARQUEE TICKER
+  ============================================= */
+  .ticker-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+  }
+  .ticker-row {
+    overflow: hidden;
+    position: relative;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 0;
+    animation: ticker 22s linear infinite;
+    width: max-content;
+  }
+  .ticker-track.reverse {
+    animation: ticker-reverse 28s linear infinite;
+  }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes ticker-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .ticker-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .ticker-row.tech-row .ticker-dot { background: #60a5fa; }
+  .ticker-row.creative-row .ticker-dot { background: #f59e0b; }
+  .ticker-metric {
+    font-family: monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .ticker-row.tech-row .ticker-metric { color: #60a5fa; }
+  .ticker-row.creative-row .ticker-metric { color: #f59e0b; }
+  .ticker-divider { color: #334155; font-size: 11px; margin: 0 2px; }
+  .ticker-label {
+    font-size: 11px;
+    color: #94a3b8;
+  }
+  .ticker-row-wrap {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .ticker-row.tech-row {
+    background: rgba(96,165,250,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .ticker-row.creative-row {
+    background: rgba(245,158,11,0.03);
+  }
+  /* fade edges */
+  .ticker-row-wrap {
+    position: relative;
+  }
+  .ticker-row-wrap::before,
+  .ticker-row-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 60px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ticker-row-wrap::before { left: 0; background: linear-gradient(to right, #0d0d1a, transparent); }
+  .ticker-row-wrap::after  { right: 0; background: linear-gradient(to left, #0d0d1a, transparent); }
+
+  /* =============================================
+     OPTION C — EDITORIAL STAT ROWS
+  ============================================= */
+  .stat-rows {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.015);
+    transition: background 0.2s;
+    cursor: default;
+    position: relative;
+  }
+  .stat-row:hover { background: rgba(255,255,255,0.04); }
+  .stat-bar {
+    width: 3px;
+    height: 36px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .stat-row.tech .stat-bar { background: linear-gradient(to bottom, #3b82f6, #60a5fa); }
+  .stat-row.creative .stat-bar { background: linear-gradient(to bottom, #d97706, #f59e0b); }
+  .stat-number {
+    font-family: monospace;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .stat-row.tech .stat-number { color: #93c5fd; }
+  .stat-row.creative .stat-number { color: #fcd34d; }
+  .stat-text {
+    flex: 1;
+  }
+  .stat-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e2e8f0;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .stat-sub {
+    font-size: 11px;
+    color: #475569;
+    font-family: monospace;
+    letter-spacing: 0.03em;
+  }
+  .stat-icon-right {
+    font-size: 16px;
+    opacity: 0.4;
+  }
+
+  /* click prompt */
+  .click-hint {
+    text-align: center;
+    font-size: 12px;
+    color: #334155;
+    margin-top: 40px;
+    font-family: monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* selectable border overlay for picking */
+  .concept-pick {
+    border: 2px solid transparent;
+    border-radius: 20px;
+    padding: 24px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    margin-bottom: 8px;
+  }
+  .concept-pick:hover { border-color: rgba(255,255,255,0.12); background: rgba(255,255,255,0.01); }
+  .concept-pick.selected { border-color: #60a5fa; background: rgba(96,165,250,0.04); }
+  .concept-pick[data-choice="b"].selected { border-color: #a855f7; background: rgba(168,85,247,0.04); }
+  .concept-pick[data-choice="c"].selected { border-color: #f59e0b; background: rgba(245,158,11,0.04); }
+
+  .selected-badge {
+    display: none;
+    font-size: 11px;
+    font-family: monospace;
+    color: #60a5fa;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-left: 12px;
+  }
+  .concept-pick[data-choice="b"] .selected-badge { color: #a855f7; }
+  .concept-pick[data-choice="c"] .selected-badge { color: #f59e0b; }
+  .concept-pick.selected .selected-badge { display: inline; }
+</style>
+</head>
+<body>
+
+<h1>Accomplishment Section — 3 Concepts</h1>
+<p class="page-subtitle">Click a concept to select it · All shown in context of the hero section</p>
+
+<!-- ============ OPTION A ============ -->
+<div class="concept-pick" data-choice="a" onclick="pick(this)">
+  <div class="concept-label">
+    <div class="concept-letter letter-a">A</div>
+    <div>
+      <div class="concept-name">Bento Mini Grid <span class="selected-badge">✓ SELECTED</span></div>
+      <div class="concept-desc">Compact tile grid — each card shows a metric + label. Different sizes give visual rhythm.</div>
+    </div>
+  </div>
+  <div class="demo-bg">
+    <div class="hero-context">
+      <div class="name">Manu Joseph.</div>
+      <div class="tags">
+        <span class="tag-tech">⬡ Staff Data Scientist</span>
+        <span class="divider-x">×</span>
+        <span class="tag-creative">✦ Storyteller</span>
+      </div>
+    </div>
+    <div class="bento">
+      <div class="bento-card wide tech">
+        <div class="bento-glow"></div>
+        <div class="bento-icon">⬡</div>
+        <div>
+          <div class="bento-metric">2,000+ Stars</div>
+          <div class="bento-label">PyTorch Tabular · GitHub</div>
+        </div>
+      </div>
+      <div class="bento-card tech">
+        <div class="bento-glow"></div>
+        <div class="bento-icon">🏆</div>
+        <div>
+          <div class="bento-metric">40 Under 40</div>
+          <div class="bento-label">Data Scientist · AIM</div>
+        </div>
+      </div>
+      <div class="bento-card tech">
+        <div class="bento-glow"></div>
+        <div class="bento-icon">📄</div>
+        <div>
+          <div class="bento-metric">5 Papers</div>
+          <div class="bento-label">ArXiv Published</div>
+        </div>
+      </div>
+      <div class="bento-card creative">
+        <div class="bento-glow"></div>
+        <div class="bento-icon">✦</div>
+        <div>
+          <div class="bento-metric">The Artist</div>
+          <div class="bento-label">Debut Thriller · 2024</div>
+        </div>
+      </div>
+      <div class="bento-card tech">
+        <div class="bento-glow"></div>
+        <div class="bento-icon">🎤</div>
+        <div>
+          <div class="bento-metric">MLDS 2026</div>
+          <div class="bento-label">Keynote Speaker</div>
+        </div>
+      </div>
+      <div class="bento-card wide creative">
+        <div class="bento-glow"></div>
+        <div class="bento-icon">🎙</div>
+        <div>
+          <div class="bento-metric">20+ Countries</div>
+          <div class="bento-label">Little Pajama Tales Podcast</div>
+        </div>
+      </div>
+      <div class="bento-card tech">
+        <div class="bento-glow"></div>
+        <div class="bento-icon">📘</div>
+        <div>
+          <div class="bento-metric">Packt Book</div>
+          <div class="bento-label">Time Series Forecasting</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OPTION B ============ -->
+<div class="concept-pick" data-choice="b" onclick="pick(this)">
+  <div class="concept-label">
+    <div class="concept-letter letter-b">B</div>
+    <div>
+      <div class="concept-name">Live Ticker Strip <span class="selected-badge">✓ SELECTED</span></div>
+      <div class="concept-desc">Two auto-scrolling rows — blue for tech, amber for fiction. Dynamic, never static.</div>
+    </div>
+  </div>
+  <div class="demo-bg">
+    <div class="hero-context">
+      <div class="name">Manu Joseph.</div>
+      <div class="tags">
+        <span class="tag-tech">⬡ Staff Data Scientist</span>
+        <span class="divider-x">×</span>
+        <span class="tag-creative">✦ Storyteller</span>
+      </div>
+    </div>
+    <div class="ticker-row-wrap">
+      <div class="ticker-row tech-row">
+        <div class="ticker-track">
+          <!-- duplicated for seamless loop -->
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">2K+ Stars</span><span class="ticker-divider">·</span><span class="ticker-label">PyTorch Tabular</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">40 Under 40</span><span class="ticker-divider">·</span><span class="ticker-label">Data Scientist · AIM</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">5 Papers</span><span class="ticker-divider">·</span><span class="ticker-label">ArXiv Published</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">MLDS 2026</span><span class="ticker-divider">·</span><span class="ticker-label">Keynote Speaker</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">Packt Book</span><span class="ticker-divider">·</span><span class="ticker-label">Time Series Forecasting</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">15+ Years</span><span class="ticker-divider">·</span><span class="ticker-label">In Data Science</span></div>
+          <!-- duplicate -->
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">2K+ Stars</span><span class="ticker-divider">·</span><span class="ticker-label">PyTorch Tabular</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">40 Under 40</span><span class="ticker-divider">·</span><span class="ticker-label">Data Scientist · AIM</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">5 Papers</span><span class="ticker-divider">·</span><span class="ticker-label">ArXiv Published</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">MLDS 2026</span><span class="ticker-divider">·</span><span class="ticker-label">Keynote Speaker</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">Packt Book</span><span class="ticker-divider">·</span><span class="ticker-label">Time Series Forecasting</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">15+ Years</span><span class="ticker-divider">·</span><span class="ticker-label">In Data Science</span></div>
+        </div>
+      </div>
+      <div class="ticker-row creative-row">
+        <div class="ticker-track reverse">
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">The Artist</span><span class="ticker-divider">·</span><span class="ticker-label">Debut Psychological Thriller · 2024</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">20+ Countries</span><span class="ticker-divider">·</span><span class="ticker-label">Little Pajama Tales Podcast</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">Shashi Tharoor</span><span class="ticker-divider">·</span><span class="ticker-label">"Blazingly paced thriller"</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">Paper Towns</span><span class="ticker-divider">·</span><span class="ticker-label">Published 2024</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">1K+ Downloads</span><span class="ticker-divider">·</span><span class="ticker-label">Podcast Listeners</span></div>
+          <!-- duplicate -->
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">The Artist</span><span class="ticker-divider">·</span><span class="ticker-label">Debut Psychological Thriller · 2024</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">20+ Countries</span><span class="ticker-divider">·</span><span class="ticker-label">Little Pajama Tales Podcast</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">Shashi Tharoor</span><span class="ticker-divider">·</span><span class="ticker-label">"Blazingly paced thriller"</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">Paper Towns</span><span class="ticker-divider">·</span><span class="ticker-label">Published 2024</span></div>
+          <div class="ticker-item"><span class="ticker-dot"></span><span class="ticker-metric">1K+ Downloads</span><span class="ticker-divider">·</span><span class="ticker-label">Podcast Listeners</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OPTION C ============ -->
+<div class="concept-pick" data-choice="c" onclick="pick(this)">
+  <div class="concept-label">
+    <div class="concept-letter letter-c">C</div>
+    <div>
+      <div class="concept-name">Editorial Stat Grid <span class="selected-badge">✓ SELECTED</span></div>
+      <div class="concept-desc">A clean 2-column grid of rows. Each row has a color bar, a big number, and a short descriptor. Minimal, editorial, fast to scan.</div>
+    </div>
+  </div>
+  <div class="demo-bg">
+    <div class="hero-context">
+      <div class="name">Manu Joseph.</div>
+      <div class="tags">
+        <span class="tag-tech">⬡ Staff Data Scientist</span>
+        <span class="divider-x">×</span>
+        <span class="tag-creative">✦ Storyteller</span>
+      </div>
+    </div>
+    <div class="stat-rows">
+      <div class="stat-row tech">
+        <div class="stat-bar"></div>
+        <div class="stat-number">2K+</div>
+        <div class="stat-text">
+          <div class="stat-title">PyTorch Tabular</div>
+          <div class="stat-sub">GitHub Stars · Open Source</div>
+        </div>
+        <div class="stat-icon-right">⬡</div>
+      </div>
+      <div class="stat-row tech">
+        <div class="stat-bar"></div>
+        <div class="stat-number">40</div>
+        <div class="stat-text">
+          <div class="stat-title">Under 40 Data Scientist</div>
+          <div class="stat-sub">Analytics India Magazine</div>
+        </div>
+        <div class="stat-icon-right">🏆</div>
+      </div>
+      <div class="stat-row tech">
+        <div class="stat-bar"></div>
+        <div class="stat-number">5</div>
+        <div class="stat-text">
+          <div class="stat-title">Research Papers</div>
+          <div class="stat-sub">ArXiv Published</div>
+        </div>
+        <div class="stat-icon-right">📄</div>
+      </div>
+      <div class="stat-row creative">
+        <div class="stat-bar"></div>
+        <div class="stat-number">1</div>
+        <div class="stat-text">
+          <div class="stat-title">Debut Novel — The Artist</div>
+          <div class="stat-sub">Psychological Thriller · 2024</div>
+        </div>
+        <div class="stat-icon-right">✦</div>
+      </div>
+      <div class="stat-row tech">
+        <div class="stat-bar"></div>
+        <div class="stat-number">15+</div>
+        <div class="stat-text">
+          <div class="stat-title">Years in Data Science</div>
+          <div class="stat-sub">Fortune 500 · Walmart · Thoucentric</div>
+        </div>
+        <div class="stat-icon-right">📊</div>
+      </div>
+      <div class="stat-row creative">
+        <div class="stat-bar"></div>
+        <div class="stat-number">20+</div>
+        <div class="stat-text">
+          <div class="stat-title">Countries Reached</div>
+          <div class="stat-sub">Little Pajama Tales Podcast</div>
+        </div>
+        <div class="stat-icon-right">🎙</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="click-hint">↑ click a concept to select · then reply in the terminal</p>
+
+<script>
+function pick(el) {
+  document.querySelectorAll('.concept-pick').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  // record for brainstorm server
+  if (window.__brainstorm_select) window.__brainstorm_select(el.dataset.choice, el.querySelector('.concept-name').textContent.trim());
+  // fallback: try native event
+  document.dispatchEvent(new CustomEvent('brainstorm-select', { detail: { choice: el.dataset.choice } }));
+}
+</script>
+</body>
+</html>
