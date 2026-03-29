@@ -90,7 +90,7 @@ export default function SideNav({ sections, activeIndex }) {
 
       <style>{`
         .side-nav a:hover .side-nav-label { opacity: 1 !important; }
-        @media (max-width: 768px) { .side-nav { display: none; } }
+        @media (max-width: 768px) { .side-nav { display: none !important; } }
       `}</style>
     </div>
   )

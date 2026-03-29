@@ -30,7 +30,33 @@ export default function Home() {
 
     // Initial triggers for the first section
     const sectionsList = wrapperRef.current?.querySelectorAll('.section') || []
-    if (sectionsList[0]) sectionsList[0].classList.add('in-view')
+    
+    // Intersection Observer for both desktop and mobile
+    const observerOptions = {
+      threshold: 0.2, // Trigger when 20% of section is visible
+      rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          // Optional: update activeIndex based on intersection
+          const id = entry.target.getAttribute('data-id');
+          const idx = homeSections.findIndex(s => s.id === id);
+          if (idx !== -1 && window.innerWidth <= 1024) {
+            setActiveIndex(idx);
+            currentRef.current = idx;
+          }
+        } else if (window.innerWidth > 1024) {
+          // On desktop, we handle removal differently? 
+          // Actually, let's keep it for desktop too if it doesn't conflict
+          // entry.target.classList.remove('in-view');
+        }
+      });
+    }, observerOptions);
+
+    sectionsList.forEach(s => observer.observe(s));
 
     const updateTransform = (withTransition = false) => {
       if (!wrapperRef.current) return;
@@ -52,6 +78,15 @@ export default function Home() {
       if (index < 0 || index >= homeSections.length) {
         dragRef.current = 0;
         updateTransform(true);
+        return;
+      }
+
+      if (window.innerWidth <= 1024) {
+        const section = homeSections[index];
+        const el = document.querySelector(`[data-id="${section.id}"]`);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        setActiveIndex(index);
+        currentRef.current = index;
         return;
       }
 
@@ -80,6 +115,7 @@ export default function Home() {
     goToSectionRef.current = goToSection;
 
     const handleWheel = (e) => {
+      if (window.innerWidth <= 1024) return; // Natural scroll on mobile/tablet
       e.preventDefault();
       if (animRef.current) return;
 
@@ -113,11 +149,13 @@ export default function Home() {
     };
 
     const handleTouchStart = (e) => {
+      if (window.innerWidth <= 1024) return;
       if (animRef.current) return;
       wrapperRef.current.touchStartY = e.touches[0].clientY;
     };
 
     const handleTouchMove = (e) => {
+      if (window.innerWidth <= 1024) return;
       e.preventDefault();
       if (animRef.current || !wrapperRef.current.touchStartY) return;
       
@@ -142,6 +180,7 @@ export default function Home() {
     };
 
     const handleTouchEnd = () => {
+      if (window.innerWidth <= 1024) return;
       if (animRef.current || dragRef.current === 0) return;
       wrapperRef.current.touchStartY = null;
       dragRef.current = 0;
@@ -157,7 +196,12 @@ export default function Home() {
       const hash = window.location.hash.replace('#', '')
       const idx = homeSections.findIndex(s => s.id === hash)
       if (idx !== -1 && idx !== currentRef.current) {
-        goToSection(idx)
+        if (window.innerWidth > 1024) {
+          goToSection(idx)
+        } else {
+          const el = document.querySelector(`[data-id="${hash}"]`);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
       }
     }
 
@@ -167,7 +211,7 @@ export default function Home() {
       setTimeout(() => handleHash(), 150)
     }
 
-    updateTransform(false);
+    if (window.innerWidth > 1024) updateTransform(false);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);

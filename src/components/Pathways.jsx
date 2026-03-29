@@ -83,8 +83,9 @@ export default function Pathways() {
           background: rgba(255,255,255,0.03) !important;
           border-color: rgba(255,255,255,0.15) !important;
         }
-        @media (max-width: 768px) {
-          .pathways-grid { grid-template-columns: 1fr !important; }
+        @media (max-width: 860px) {
+          .pathways-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+          .container h3 { margin-bottom: 32px !important; }
         }
       `}</style>
     </div>

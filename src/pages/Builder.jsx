@@ -11,7 +11,7 @@ export default function Builder() {
   return (
     <>
       <Nav />
-      <main style={{ minHeight: '100vh', paddingTop: '100px', paddingBottom: '80px' }}>
+      <main style={{ minHeight: '100vh', paddingTop: 'clamp(80px, 12vh, 120px)', paddingBottom: 'clamp(60px, 10vh, 100px)' }}>
 
       <div style={{ paddingBottom: '80px' }} id="data-science">
         <DataScience />

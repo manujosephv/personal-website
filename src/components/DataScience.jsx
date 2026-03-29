@@ -172,7 +172,7 @@ export default function DataScience() {
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 24 }}>
           {[
             { v: '6', l: 'Publications' },
-            { v: '232', l: 'Citations' },
+            { v: '98', l: 'Citations' },
             { v: 'h-4', l: 'h-index' },
             { v: '13', l: 'Highly Influential' },
           ].map(s => (
@@ -358,11 +358,11 @@ export default function DataScience() {
       </div>
 
       <style>{`
-        @media (max-width: 640px) {
+        @media (max-width: 860px) {
           .ds-two-col { grid-template-columns: 1fr !important; }
-          .builder-hero { grid-template-columns: 1fr !important; }
-          .book-card { grid-template-columns: 1fr !important; }
-          .book-card img { width: 100px !important; margin: 0 auto }
+          .builder-hero { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .book-card { grid-template-columns: 1fr !important; text-align: center; }
+          .book-card img { width: 120px !important; margin: 0 auto 24px !important; }
         }
       `}</style>
     </div>

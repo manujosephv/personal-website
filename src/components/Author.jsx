@@ -345,11 +345,11 @@ export default function Author() {
       </div>
 
       <style>{`
-        @media (max-width: 768px) {
-          .author-hero-top { grid-template-columns: 1fr !important; gap: 32px !important; }
-          .story-intro-flex { flex-direction: column !important; gap: 20px !important; align-items: center !important; text-align: center !important; }
-          .author-hero { grid-template-columns: 1fr !important; }
-          .author-hero > div:first-child { max-width: 240px; }
+        @media (max-width: 860px) {
+          .author-hero-top { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .story-intro-flex { flex-direction: column !important; gap: 24px !important; align-items: center !important; text-align: center !important; }
+          .author-hero { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .author-hero > div:first-child { max-width: 280px; margin: 0 auto; }
           .char-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>

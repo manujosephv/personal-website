@@ -42,7 +42,7 @@ body {
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: clamp(14px, 1.25vw, 16px);
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -94,7 +94,12 @@ button { font-family: var(--font-sans); cursor: pointer; border: none; backgroun
   width: 100%;
   max-width: 1160px;
   margin: 0 auto;
-  padding: 0 clamp(24px, 5vw, 72px);
+  padding: 0 clamp(20px, 6vw, 72px);
+}
+
+/* Base utility for mobile padding */
+.section-padding {
+  padding: clamp(60px, 10vh, 100px) 0;
 }
 
 /* ============================================================
@@ -227,6 +232,10 @@ button { font-family: var(--font-sans); cursor: pointer; border: none; backgroun
    ============================================================ */
 
 /* Re-trigger animations when sections enter view via IntersectionObserver */
+.section.in-view [style*="animation"] {
+  opacity: 1 !important;
+}
+
 .section:not(.in-view) [style*="animation"] {
   animation: none !important;
   opacity: 0 !important;
@@ -262,6 +271,22 @@ html { -ms-overflow-style: none; scrollbar-width: none; }
    RESPONSIVE
    ============================================================ */
 
+@media (max-width: 1024px) {
+  .section { height: auto !important; min-height: 0 !important; padding: 0 !important; display: block !important; overflow: visible !important; }
+  .fullpage-wrapper { overflow-x: hidden !important; overflow-y: auto !important; height: auto !important; position: relative !important; width: 100% !important; }
+  .sections-container { transform: none !important; transition: none !important; height: auto !important; display: block !important; width: 100% !important; }
+}
+
 @media (max-width: 768px) {
-  .section { min-height: auto; padding: 80px 0; align-items: flex-start; }
+  .container { padding: 0 24px; }
+  .section { padding: 48px 0; }
+  
+  /* Navigation mobile classes */
+  .mobile-only { display: block !important; }
+  .desktop-only { display: none !important; }
+}
+
+@media (min-width: 769px) {
+  .mobile-only { display: none !important; }
+  .desktop-only { display: block !important; }
 }

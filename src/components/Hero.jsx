@@ -305,31 +305,35 @@ const stats = [
 export default function Hero() {
 
   return (
-    <div className="container" style={{ paddingTop: 100, paddingBottom: 80, width: '100%' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 40, alignItems: 'center' }} className="hero-grid">
+    <div className="container" style={{ 
+      paddingTop: 'clamp(80px, 15vh, 120px)', 
+      paddingBottom: 'clamp(40px, 10vh, 80px)', 
+      width: '100%',
+    }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 40, alignItems: 'center', width: '100%' }} className="hero-grid">
 
         {/* ── Left: text ── */}
-        <div style={{ maxWidth: 700 }}>
+        <div style={{ maxWidth: 800 }}>
 
           {/* Location pill */}
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 7,
-            marginBottom: 36,
+            marginBottom: 'clamp(24px, 5vh, 36px)',
             animation: 'fadeIn 0.6s ease both',
           }}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', animation: 'blink 2.5s infinite' }} />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-muted)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-muted)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
               Bangalore, India
             </span>
           </div>
 
           {/* Main title — letter reveal */}
           <h1 style={{
-            fontSize: 'clamp(3.2rem, 8vw, 6.4rem)',
+            fontSize: 'clamp(2.8rem, 9vw, 6rem)',
             fontWeight: 700,
-            lineHeight: 1.0,
-            letterSpacing: '-0.025em',
-            marginBottom: 20,
+            lineHeight: 0.95,
+            letterSpacing: '-0.03em',
+            marginBottom: 24,
           }}>
             <LetterReveal text="Manu" delay={0.05} style={{ display: 'block' }} />
             <LetterReveal text="Joseph." delay={0.25} style={{ display: 'block', color: 'var(--text-secondary)' }} />
@@ -337,27 +341,27 @@ export default function Hero() {
 
           {/* Role line */}
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
-            marginBottom: 56,
+            display: 'flex', alignItems: 'center', gap: '8px 16px', flexWrap: 'wrap',
+            marginBottom: 'clamp(32px, 6vh, 48px)',
             animation: 'fadeInUp 0.6s ease 0.55s both',
           }}>
             <span style={{
-              fontFamily: 'var(--font-mono)', fontSize: 'clamp(0.8rem, 1.8vw, 0.95rem)',
+              fontFamily: 'var(--font-mono)', fontSize: 'clamp(12px, 1.8vw, 15px)',
               color: 'var(--tech-light)', letterSpacing: '0.04em',
             }}>
               Principal Data Scientist
             </span>
-            <span style={{ color: 'var(--border-mid)', fontSize: 18 }}>·</span>
+            <span style={{ color: 'var(--border-mid)', fontSize: 16 }} className="desktop-only">·</span>
             <span style={{
               fontFamily: 'var(--font-sans)', fontStyle: 'italic',
-              fontSize: 'clamp(0.8rem, 1.8vw, 0.95rem)',
+              fontSize: 'clamp(12px, 1.8vw, 15px)',
               color: 'var(--creative-light)',
             }}>
               Psychological Thriller Author
             </span>
-            <span style={{ color: 'var(--border-mid)', fontSize: 18 }}>·</span>
+            <span style={{ color: 'var(--border-mid)', fontSize: 16 }} className="desktop-only">·</span>
             <span style={{
-              fontFamily: 'var(--font-sans)', fontSize: 'clamp(0.8rem, 1.8vw, 0.95rem)',
+              fontFamily: 'var(--font-sans)', fontSize: 'clamp(12px, 1.8vw, 15px)',
               color: '#fff',
             }}>
               Open Source Creator
@@ -372,12 +376,12 @@ export default function Hero() {
             borderLeft: '1px solid var(--border)',
             borderRadius: 10,
             overflow: 'hidden',
-            marginBottom: 48,
+            marginBottom: 'clamp(32px, 6vh, 48px)',
             animation: 'fadeInUp 0.6s ease 0.65s both',
           }} className="stat-strip">
             {stats.map((s, i) => (
               <div key={i} style={{
-                padding: '20px 18px',
+                padding: 'clamp(14px, 3vw, 20px) clamp(12px, 2.5vw, 18px)',
                 borderRight: '1px solid var(--border)',
                 borderBottom: '1px solid var(--border)',
                 background: 'rgba(255,255,255,0.015)',
@@ -389,7 +393,7 @@ export default function Hero() {
               >
                 <div style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: 'clamp(1.3rem, 2.5vw, 1.7rem)',
+                  fontSize: 'clamp(1.1rem, 2.8vw, 1.6rem)',
                   fontWeight: 700,
                   lineHeight: 1,
                   marginBottom: 6,
@@ -398,7 +402,7 @@ export default function Hero() {
                   {s.value}
                 </div>
                 <div style={{
-                  fontSize: 13,
+                  fontSize: 'clamp(11px, 1.5vw, 13px)',
                   fontWeight: 600,
                   color: 'var(--text-primary)',
                   marginBottom: 2,
@@ -408,7 +412,7 @@ export default function Hero() {
                 </div>
                 <div style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: 10,
+                  fontSize: 9,
                   color: 'var(--text-muted)',
                   letterSpacing: '0.04em',
                 }}>
@@ -423,13 +427,13 @@ export default function Hero() {
             display: 'flex', gap: 12, flexWrap: 'wrap',
             animation: 'fadeInUp 0.6s ease 0.75s both',
           }}>
-            <Link to="/builder" className="btn btn-solid" style={{ fontSize: 14, padding: '11px 24px' }}>
+            <Link to="/builder" className="btn btn-solid" style={{ fontSize: 13, padding: '11px 22px' }}>
               Explore the Science →
             </Link>
-            <Link to="/storyteller" className="btn btn-creative" style={{ fontSize: 14, padding: '11px 24px' }}>
+            <Link to="/storyteller" className="btn btn-creative" style={{ fontSize: 13, padding: '11px 22px' }}>
               Read the Story →
             </Link>
-            <a href="#about" className="btn btn-ghost" style={{ fontSize: 14, padding: '11px 24px' }}>
+            <a href="#about" className="btn btn-ghost" style={{ fontSize: 13, padding: '11px 22px' }}>
               About Me
             </a>
           </div>
@@ -437,18 +441,26 @@ export default function Hero() {
 
         {/* ── Right: Orbital System ── */}
         <div style={{ flexShrink: 0, opacity: 0, animation: 'fadeIn 1.2s ease 0.8s both' }} className="hero-shapes">
-          <OrbitalSystem width={520} height={560} />
+          <OrbitalSystem width={480} height={520} />
         </div>
       </div>
 
       <style>{`
-        @media (max-width: 900px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
+        @media (max-width: 1024px) {
+          .hero-grid { grid-template-columns: 1fr !important; text-align: center; justify-items: center; }
+          .hero-shapes { order: -1; margin-bottom: 40px; }
+          .hero-shapes div { transform: scale(0.85); margin: 0 auto; }
+          .stat-strip { grid-template-columns: repeat(3, 1fr) !important; }
+        }
+        @media (max-width: 768px) {
+          .hero-grid { text-align: left; justify-items: start; }
           .hero-shapes { display: none !important; }
           .stat-strip { grid-template-columns: repeat(2, 1fr) !important; }
         }
         @media (max-width: 480px) {
-          .stat-strip { grid-template-columns: 1fr 1fr !important; }
+          .stat-strip { grid-template-columns: 1fr !important; }
+          .hero-grid h1 { font-size: 2.1rem !important; line-height: 1.15 !important; overflow-wrap: break-word; }
+          .stat-strip > div { padding: 12px 16px !important; }
         }
       `}</style>
     </div>
