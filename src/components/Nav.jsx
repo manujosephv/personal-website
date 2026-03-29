@@ -72,40 +72,43 @@ export default function Nav({ sections, activeIndex, onNavigate }) {
         {/* Navigation Links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px, 3vw, 32px)' }} className="nav-links">
           {isHome && sections ? (
-            sections.map(({ id, label }, i) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (onNavigate) onNavigate(i);
-                }}
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '11px',
-                  fontWeight: 500,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  color: activeId === id ? 'var(--text-primary)' : 'var(--text-muted)',
-                  transition: 'color 0.2s ease',
-                  position: 'relative',
-                  padding: '8px 0',
-                }}
-              >
-                {label}
-                {activeId === id && (
-                  <span style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '2px',
-                    background: 'var(--tech)',
-                    borderRadius: '2px',
-                  }} />
-                )}
-              </a>
-            ))
+            sections.map(({ id, label }, i) => {
+              if (id === 'contact') return null; // Remove the "no box" contact link
+              return (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onNavigate) onNavigate(i);
+                  }}
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    color: activeId === id ? 'var(--text-primary)' : 'var(--text-muted)',
+                    transition: 'color 0.2s ease',
+                    position: 'relative',
+                    padding: '8px 0',
+                  }}
+                >
+                  {label}
+                  {activeId === id && (
+                    <span style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '2px',
+                      background: 'var(--tech)',
+                      borderRadius: '2px',
+                    }} />
+                  )}
+                </a>
+              )
+            })
           ) : (
             // Subpage links
             <>
@@ -128,17 +131,27 @@ export default function Nav({ sections, activeIndex, onNavigate }) {
               </Link>
             </>
           )}
-
-          {/* Persistent Contact button */}
+          
+          {/* Persistent Contact button (the one WITH the box) */}
           <a
             href="/#contact"
+            onClick={(e) => {
+              if (isHome && onNavigate) {
+                e.preventDefault();
+                const contactIdx = sections.findIndex(s => s.id === 'contact');
+                if (contactIdx !== -1) onNavigate(contactIdx);
+              }
+            }}
             className="btn btn-ghost"
             style={{ 
               fontSize: 11, 
               padding: '6px 16px', 
               fontFamily: 'var(--font-mono)', 
               textTransform: 'uppercase',
-              marginLeft: 8
+              marginLeft: 8,
+              // Background to highlight it as a button
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid var(--border)',
             }}
           >
             Contact
