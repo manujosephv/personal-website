@@ -12,35 +12,108 @@ export default function DataScience() {
     <div className="container" style={{ paddingTop: 80, paddingBottom: 80, width: '100%' }}>
 
       {/* ── Hero Intro ── */}
-      <p className="eyebrow tech" style={{ marginBottom: 16 }}>The Builder</p>
-      <h1 style={{
-        fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 700, lineHeight: 1.1,
-        letterSpacing: '-0.03em', marginBottom: 24,
-      }}>
-        Time Series.{' '}
-        <span style={{ color: 'var(--tech-light)' }}>Deep Learning.</span>
-        <br />Open Source.
-      </h1>
-      <p style={{
-        color: 'var(--text-secondary)', fontSize: '1.1rem', lineHeight: 1.8,
-        maxWidth: 680, marginBottom: 16,
-      }}>
-        I build tools that help practitioners go from idea to deployed model faster. My open-source work
-        sits at the intersection of academic research and production engineering — making state-of-the-art
-        deep learning accessible without sacrificing rigour.
-      </p>
-      <p style={{
-        color: 'var(--text-secondary)', fontSize: '1.1rem', lineHeight: 1.8,
-        maxWidth: 680, marginBottom: 40,
-      }}>
-        Over <strong style={{ color: 'var(--text-primary)' }}>15+ years</strong>, I've applied ML to
-        Fortune 500 transformations — from supply chain demand forecasting to novel deep learning
-        architectures. I ship production models <em>and</em> publish research.
-      </p>
-      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 72 }}>
-        <a href="https://github.com/manujosephv" target="_blank" rel="noopener noreferrer" className="btn btn-tech">GitHub ↗</a>
-        <a href="https://deep-and-shallow.com" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Blog ↗</a>
-        <a href="https://scholar.google.com/citations?user=oycu9JcAAAAJ" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Google Scholar ↗</a>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center', marginBottom: 72 }} className="builder-hero">
+
+        {/* Left — copy */}
+        <div>
+          <p className="eyebrow tech" style={{ marginBottom: 16 }}>The Builder</p>
+          <h1 style={{
+            fontSize: 'clamp(2rem, 4.5vw, 3.2rem)', fontWeight: 700, lineHeight: 1.1,
+            letterSpacing: '-0.03em', marginBottom: 24,
+          }}>
+            Time Series.{' '}
+            <span style={{ color: 'var(--tech-light)' }}>Deep Learning.</span>
+            <br />Open Source.
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: 1.8, marginBottom: 16 }}>
+            I build tools that help practitioners go from idea to deployed model faster. My open-source work
+            sits at the intersection of academic research and production engineering — making state-of-the-art
+            deep learning accessible without sacrificing rigour.
+          </p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: 1.8, marginBottom: 36 }}>
+            Over <strong style={{ color: 'var(--text-primary)' }}>15+ years</strong>, I've applied ML to
+            Fortune 500 transformations — from supply chain demand forecasting to novel deep learning
+            architectures. I ship production models <em>and</em> publish research.
+          </p>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <a href="https://github.com/manujosephv" target="_blank" rel="noopener noreferrer" className="btn btn-tech">GitHub ↗</a>
+            <a href="https://deep-and-shallow.com" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Blog ↗</a>
+            <a href="https://scholar.google.com/citations?user=oycu9JcAAAAJ" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Google Scholar ↗</a>
+          </div>
+        </div>
+
+        {/* Right — code terminal */}
+        <div style={{
+          background: '#0d1117',
+          border: '1px solid rgba(59,130,246,0.2)',
+          borderRadius: 14,
+          overflow: 'hidden',
+          boxShadow: '0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04)',
+          fontFamily: 'var(--font-mono)',
+        }}>
+          {/* Window chrome */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 6,
+            padding: '12px 16px',
+            background: 'rgba(255,255,255,0.04)',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+          }}>
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f57', display: 'block' }} />
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#febc2e', display: 'block' }} />
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#28c840', display: 'block' }} />
+            <span style={{ marginLeft: 10, fontSize: 11, color: 'rgba(255,255,255,0.3)' }}>manu_joseph.py</span>
+          </div>
+          {/* Code */}
+          <div style={{ padding: '20px 24px', fontSize: 13, lineHeight: 1.9 }}>
+
+            {/* import line */}
+            <div style={{ marginBottom: 8 }}>
+              <span style={{ color: '#ff7b72' }}>from</span>
+              <span style={{ color: '#c9d1d9' }}> builder </span>
+              <span style={{ color: '#ff7b72' }}>import</span>
+              <span style={{ color: '#79c0ff' }}> ManuJoseph</span>
+            </div>
+
+            {/* instantiate */}
+            <div><span style={{ color: '#c9d1d9' }}>manu </span><span style={{ color: '#ff7b72' }}>= </span><span style={{ color: '#d2a8ff' }}>ManuJoseph</span><span style={{ color: '#c9d1d9' }}>(</span></div>
+            <div style={{ paddingLeft: 20 }}>
+              <span style={{ color: '#c9d1d9' }}>experience</span><span style={{ color: '#ff7b72' }}>=</span><span style={{ color: '#a5d6ff' }}>"15+ years"</span><span style={{ color: '#c9d1d9' }}>,</span>
+            </div>
+            <div style={{ paddingLeft: 20 }}>
+              <span style={{ color: '#c9d1d9' }}>domains</span><span style={{ color: '#ff7b72' }}>=</span><span style={{ color: '#c9d1d9' }}>[</span><span style={{ color: '#a5d6ff' }}>"time_series"</span><span style={{ color: '#c9d1d9' }}>, </span><span style={{ color: '#a5d6ff' }}>"deep_learning"</span><span style={{ color: '#c9d1d9' }}>],</span>
+            </div>
+            <div style={{ marginBottom: 8, paddingLeft: 20 }}>
+              <span style={{ color: '#c9d1d9' }}>scale</span><span style={{ color: '#ff7b72' }}>=</span><span style={{ color: '#a5d6ff' }}>"Fortune 500"</span>
+            </div>
+            <div style={{ marginBottom: 12 }}><span style={{ color: '#c9d1d9' }}>)</span></div>
+
+            {/* fit */}
+            <div style={{ marginBottom: 12 }}>
+              <span style={{ color: '#c9d1d9' }}>manu.</span><span style={{ color: '#d2a8ff' }}>fit</span><span style={{ color: '#c9d1d9' }}>(data</span><span style={{ color: '#ff7b72' }}>=</span><span style={{ color: '#a5d6ff' }}>"15 years of hard problems"</span><span style={{ color: '#c9d1d9' }}>)</span>
+            </div>
+
+            {/* predict / outputs */}
+            <div><span style={{ color: '#c9d1d9' }}>outputs </span><span style={{ color: '#ff7b72' }}>= </span><span style={{ color: '#c9d1d9' }}>manu.</span><span style={{ color: '#d2a8ff' }}>build</span><span style={{ color: '#c9d1d9' }}>(</span></div>
+            <div style={{ paddingLeft: 20 }}><span style={{ color: '#c9d1d9' }}>[</span></div>
+            <div style={{ paddingLeft: 40 }}><span style={{ color: '#a5d6ff' }}>"PyTorch Tabular"</span><span style={{ color: '#c9d1d9' }}>,</span><span style={{ color: '#6e7681' }}>  # ★ 1,600+ stars</span></div>
+            <div style={{ paddingLeft: 40 }}><span style={{ color: '#a5d6ff' }}>"GANDALF"</span><span style={{ color: '#c9d1d9' }}>,</span><span style={{ color: '#6e7681' }}>          # SOTA tabular model</span></div>
+            <div style={{ paddingLeft: 40 }}><span style={{ color: '#a5d6ff' }}>"Modern Time Series"</span><span style={{ color: '#c9d1d9' }}>,</span><span style={{ color: '#6e7681' }}>  # 2nd edition</span></div>
+            <div style={{ paddingLeft: 40 }}><span style={{ color: '#a5d6ff' }}>"Foundational TSF"</span><span style={{ color: '#c9d1d9' }}>,</span><span style={{ color: '#6e7681' }}>    # zero-shot, MAMBA</span></div>
+            <div style={{ paddingLeft: 40 }}><span style={{ color: '#a5d6ff' }}>"2 Patents"</span><span style={{ color: '#c9d1d9' }}>,</span><span style={{ color: '#6e7681' }}>           # filed @ Walmart</span></div>
+            <div style={{ paddingLeft: 20 }}><span style={{ color: '#c9d1d9' }}>]</span></div>
+            <div style={{ marginBottom: 12 }}><span style={{ color: '#c9d1d9' }}>)</span></div>
+
+            {/* assert */}
+            <div style={{ paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+              <span style={{ color: '#ff7b72' }}>assert </span>
+              <span style={{ color: '#c9d1d9' }}>outputs.</span>
+              <span style={{ color: '#79c0ff' }}>all_shipped </span>
+              <span style={{ color: '#ff7b72' }}>== </span>
+              <span style={{ color: '#79c0ff' }}>True</span>
+              <span style={{ color: '#6e7681' }}>  # ✓</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* ── PyTorch Tabular Flagship ── */}
@@ -287,6 +360,7 @@ export default function DataScience() {
       <style>{`
         @media (max-width: 640px) {
           .ds-two-col { grid-template-columns: 1fr !important; }
+          .builder-hero { grid-template-columns: 1fr !important; }
           .book-card { grid-template-columns: 1fr !important; }
           .book-card img { width: 100px !important; margin: 0 auto }
         }
