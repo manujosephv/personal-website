@@ -19,7 +19,7 @@ export default function Footer() {
             Manu Joseph
           </span>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-muted)', letterSpacing: '0.15em', marginLeft: 12 }}>
-            STAFF DATA SCIENTIST · FICTION AUTHOR
+            PRINCIPAL DATA SCIENTIST · FICTION AUTHOR
           </span>
         </div>
 
