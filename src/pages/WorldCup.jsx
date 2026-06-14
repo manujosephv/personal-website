@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '../worldcup.css';
 import { FLAG, M } from '../data/wc2026.js';
 import {
-  buildMatches, stageBadge, watch, fmtFlag, groupByDay,
+  buildMatches, stageBadge, watch, fmtFlag, formatTime12, groupByDay,
   passesFilter, nextMatch, formatCountdown, buildICS,
 } from '../worldcup/logic.js';
 import {
@@ -233,12 +233,12 @@ export default function WorldCup() {
                   const [bclass, btxt] = stageBadge(m.stage);
                   const [wc, wt] = watch(m.time);
                   const on = picks.has(m.id);
-                  const sameNight = (+m.time.split(':')[0]) < 11;
+                  const { hm, ampm } = formatTime12(m.time);
                   return (
                     <div className={'card' + (on ? ' picked' : '')} key={m.id}>
                       <div className="time">
-                        <div className="hr">{m.time}</div>
-                        {sameNight && <span className="nx">↳ same night</span>}
+                        <div className="hr">{hm}</div>
+                        <span className="nx">{ampm}</span>
                       </div>
                       <div className="info">
                         <div className="teams">

@@ -42,6 +42,14 @@ export function fmtFlag(team, FLAG) {
   return FLAG[team] ? FLAG[team] + " " : "";
 }
 
+// "HH:MM" (24h IST) -> { hm: "7:30", ampm: "AM" } for 12-hour display.
+export function formatTime12(time) {
+  const [h, m] = time.split(":").map(Number);
+  const ampm = h < 12 ? "AM" : "PM";
+  const hh = h % 12 === 0 ? 12 : h % 12;
+  return { hm: `${hh}:${String(m).padStart(2, "0")}`, ampm };
+}
+
 export function dayLabel(date) {
   const d = new Date(date + "T00:00:00Z");
   return { dow: DOW[d.getUTCDay()], dt: d.getUTCDate() + " " + MON[d.getUTCMonth()] };

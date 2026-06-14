@@ -89,7 +89,7 @@
 .wc-planner .time{min-width:62px;text-align:center;display:flex;flex-direction:column;justify-content:center;
   border-right:1px solid var(--line);padding-right:10px}
 .wc-planner .time .hr{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;letter-spacing:-.5px}
-.wc-planner .time .nx{font-size:9px;color:var(--amber);letter-spacing:.06em;margin-top:1px}
+.wc-planner .time .nx{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;margin-top:2px}
 .wc-planner .info{flex:1;min-width:0}
 .wc-planner .teams{font-weight:700;font-size:16px;line-height:1.25}
 .wc-planner .teams .v{color:var(--muted);font-weight:500;font-size:13px;margin:0 5px}

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  buildMatches, stageCat, stageBadge, watch, fmtFlag,
+  buildMatches, stageCat, stageBadge, watch, fmtFlag, formatTime12,
   groupByDay, passesFilter, nextMatch, formatCountdown, buildICS
 } from './logic.js';
 
@@ -50,6 +50,19 @@ describe('fmtFlag', () => {
   });
   it('returns empty string for unknown teams', () => {
     expect(fmtFlag('Nowhere', FLAGS)).toBe('');
+  });
+});
+
+describe('formatTime12', () => {
+  it('converts midnight and morning to AM', () => {
+    expect(formatTime12('00:30')).toEqual({ hm: '12:30', ampm: 'AM' });
+    expect(formatTime12('07:30')).toEqual({ hm: '7:30', ampm: 'AM' });
+    expect(formatTime12('00:00')).toEqual({ hm: '12:00', ampm: 'AM' });
+  });
+  it('converts noon and evening to PM', () => {
+    expect(formatTime12('12:00')).toEqual({ hm: '12:00', ampm: 'PM' });
+    expect(formatTime12('12:30')).toEqual({ hm: '12:30', ampm: 'PM' });
+    expect(formatTime12('22:30')).toEqual({ hm: '10:30', ampm: 'PM' });
   });
 });
 
