@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '../worldcup.css';
 import { FLAG, M } from '../data/wc2026.js';
 import {
-  buildMatches, stageBadge, watch, fmtFlag, formatTime12, groupByDay,
+  buildMatches, stageBadge, watch, fmtFlag, formatTime12, istDateString, groupByDay,
   passesFilter, nextMatch, formatCountdown, buildICS,
 } from '../worldcup/logic.js';
 import {
@@ -34,6 +34,7 @@ export default function WorldCup() {
   const [q, setQ] = useState('');
   const [now, setNow] = useState(() => new Date());
   const [toastMsg, setToastMsg] = useState('');
+  const [showPast, setShowPast] = useState(false);
 
   const saveTimer = useRef(null);
   const toastTimer = useRef(null);
@@ -167,6 +168,52 @@ export default function WorldCup() {
   const upcoming = nextMatch(matches, picks, now);
   const cd = upcoming ? formatCountdown(upcoming.dt - now) : null;
 
+  // Collapse finished days (date before today in IST) into one bundle. Skip the
+  // collapse while searching so results are never hidden behind the bundle.
+  const todayIST = istDateString(now);
+  const pastGroups = groups.filter(g => g.date < todayIST);
+  const currentGroups = groups.filter(g => g.date >= todayIST);
+  const collapsePast = !q && pastGroups.length > 0;
+
+  const renderDay = (g) => (
+    <div key={g.date}>
+      <div className="dayhdr">
+        <span className="dow">{g.label.dow}</span>
+        <span className="dt">{g.label.dt} · IST</span>
+        {g.date === todayIST && <span className="today-badge">TODAY</span>}
+        <span className="ln" />
+      </div>
+      <div className="day-grid">
+        {g.matches.map(m => {
+          const [bclass, btxt] = stageBadge(m.stage);
+          const [wc, wt] = watch(m.time);
+          const on = picks.has(m.id);
+          const { hm, ampm } = formatTime12(m.time);
+          return (
+            <div className={'card' + (on ? ' picked' : '')} key={m.id}>
+              <div className="time">
+                <div className="hr">{hm}</div>
+                <span className="nx">{ampm}</span>
+              </div>
+              <div className="info">
+                <div className="teams">
+                  {fmtFlag(m.a, FLAG)}{m.a}<span className="v">vs</span>{fmtFlag(m.b, FLAG)}{m.b}
+                </div>
+                <div className="meta">
+                  <span className={'badge ' + bclass}>{btxt}</span>
+                  <span className="watch"><span className={'dot ' + wc} />{wt}</span>
+                </div>
+              </div>
+              <button className={'star' + (on ? ' on' : '')} aria-label="Save match" onClick={() => toggle(m.id)}>
+                {on ? '★' : '☆'}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
   return (
     <div className="wc-planner">
       <div className="wrap">
@@ -221,43 +268,18 @@ export default function WorldCup() {
                 ? <><span className="big">★</span>No matches saved yet.<br />Switch to <b>All matches</b> and tap the star on games you want to watch.</>
                 : <><span className="big">🔍</span>No matches found. Try a different team or stage.</>}
             </div>
-          ) : groups.map(g => (
-            <div key={g.date}>
-              <div className="dayhdr">
-                <span className="dow">{g.label.dow}</span>
-                <span className="dt">{g.label.dt} · IST</span>
-                <span className="ln" />
-              </div>
-              <div className="day-grid">
-                {g.matches.map(m => {
-                  const [bclass, btxt] = stageBadge(m.stage);
-                  const [wc, wt] = watch(m.time);
-                  const on = picks.has(m.id);
-                  const { hm, ampm } = formatTime12(m.time);
-                  return (
-                    <div className={'card' + (on ? ' picked' : '')} key={m.id}>
-                      <div className="time">
-                        <div className="hr">{hm}</div>
-                        <span className="nx">{ampm}</span>
-                      </div>
-                      <div className="info">
-                        <div className="teams">
-                          {fmtFlag(m.a, FLAG)}{m.a}<span className="v">vs</span>{fmtFlag(m.b, FLAG)}{m.b}
-                        </div>
-                        <div className="meta">
-                          <span className={'badge ' + bclass}>{btxt}</span>
-                          <span className="watch"><span className={'dot ' + wc} />{wt}</span>
-                        </div>
-                      </div>
-                      <button className={'star' + (on ? ' on' : '')} aria-label="Save match" onClick={() => toggle(m.id)}>
-                        {on ? '★' : '☆'}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+          ) : collapsePast ? (
+            <>
+              <button className="pastbar" onClick={() => setShowPast(s => !s)}>
+                <span>{showPast ? '▾' : '▸'} {pastGroups.length} earlier day{pastGroups.length > 1 ? 's' : ''} · finished</span>
+                <span className="pastbar-act">{showPast ? 'Hide' : 'Show'}</span>
+              </button>
+              {showPast && pastGroups.map(renderDay)}
+              {currentGroups.map(renderDay)}
+            </>
+          ) : (
+            groups.map(renderDay)
+          )}
         </div>
 
         <div className="note">

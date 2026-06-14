@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  buildMatches, stageCat, stageBadge, watch, fmtFlag, formatTime12,
+  buildMatches, stageCat, stageBadge, watch, fmtFlag, formatTime12, istDateString,
   groupByDay, passesFilter, nextMatch, formatCountdown, buildICS
 } from './logic.js';
 
@@ -63,6 +63,16 @@ describe('formatTime12', () => {
     expect(formatTime12('12:00')).toEqual({ hm: '12:00', ampm: 'PM' });
     expect(formatTime12('12:30')).toEqual({ hm: '12:30', ampm: 'PM' });
     expect(formatTime12('22:30')).toEqual({ hm: '10:30', ampm: 'PM' });
+  });
+});
+
+describe('istDateString', () => {
+  it('returns the IST calendar date for an instant', () => {
+    expect(istDateString(new Date('2026-06-20T10:00:00Z'))).toBe('2026-06-20');
+  });
+  it('rolls to the next day when IST crosses midnight', () => {
+    // 18:35 UTC + 5:30 = 00:05 IST next day
+    expect(istDateString(new Date('2026-06-20T18:35:00Z'))).toBe('2026-06-21');
   });
 });
 

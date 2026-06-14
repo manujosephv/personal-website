@@ -50,6 +50,14 @@ export function formatTime12(time) {
   return { hm: `${hh}:${String(m).padStart(2, "0")}`, ampm };
 }
 
+// The calendar date (YYYY-MM-DD) at the given instant, in IST. Used to decide
+// which day-groups are "past" (date < today's IST date). ISO date strings sort
+// lexicographically, so callers can compare with < directly.
+export function istDateString(instant) {
+  const ist = new Date(instant.getTime() + 5.5 * 3600 * 1000);
+  return ist.toISOString().slice(0, 10);
+}
+
 export function dayLabel(date) {
   const d = new Date(date + "T00:00:00Z");
   return { dow: DOW[d.getUTCDay()], dt: d.getUTCDate() + " " + MON[d.getUTCMonth()] };
