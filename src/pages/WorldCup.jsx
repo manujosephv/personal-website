@@ -7,7 +7,8 @@ import {
   passesFilter, nextMatch, formatCountdown, buildICS,
 } from '../worldcup/logic.js';
 import {
-  getCachedPw, setCachedPw, setLocalPicks, fetchPicks, savePicks,
+  getCachedPw, setCachedPw, setLocalPicks, getPendingLocalPicks, clearLocalPicks,
+  fetchPicks, savePicks,
 } from '../worldcup/sync.js';
 
 const STAGES = [
@@ -42,6 +43,19 @@ export default function WorldCup() {
     return () => clearInterval(t);
   }, []);
 
+  // Adopt the server's picks, but prefer a pending offline copy (a prior save
+  // that failed). When one exists, re-push it and clear it once it lands.
+  async function hydrate(password, serverPicks) {
+    let ids = serverPicks;
+    const pending = getPendingLocalPicks();
+    if (pending) {
+      ids = pending;
+      const res = await savePicks(password, pending);
+      if (res.ok) clearLocalPicks();
+    }
+    setPicks(new Set(ids.filter(id => id >= 0 && id < matches.length)));
+  }
+
   useEffect(() => {
     const cached = getCachedPw();
     if (!cached) return;
@@ -49,7 +63,7 @@ export default function WorldCup() {
       const r = await fetchPicks(cached);
       if (r.ok) {
         setPw(cached);
-        setPicks(new Set(r.picks.filter(id => id >= 0 && id < matches.length)));
+        await hydrate(cached, r.picks);
         setLocked(false);
       }
     })();
@@ -68,7 +82,7 @@ export default function WorldCup() {
     if (r.ok) {
       setCachedPw(pwInput);
       setPw(pwInput);
-      setPicks(new Set(r.picks.filter(id => id >= 0 && id < matches.length)));
+      await hydrate(pwInput, r.picks);
       setLocked(false);
     } else if (r.status === 0) {
       setAuthError('Network error — try again.');
@@ -246,7 +260,7 @@ export default function WorldCup() {
 
         <div className="note">
           Times converted from FIFA's official Eastern-Time schedule to IST (UTC+5:30). Knockout
-          matchups show placeholders until group results are in. Your picks sync to your account.
+          matchups show placeholders until group results are in. Your picks sync across your devices.
           {' '}<Link to="/">← back to manujoseph.dev</Link>
         </div>
       </div>

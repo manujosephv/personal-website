@@ -7,14 +7,18 @@ export function getCachedPw() {
 export function setCachedPw(pw) {
   try { localStorage.setItem(PW_KEY, pw); } catch { /* ignore */ }
 }
-export function getLocalPicks() {
-  try {
-    const v = localStorage.getItem(LOCAL_PICKS_KEY);
-    return v ? JSON.parse(v) : [];
-  } catch { return []; }
-}
 export function setLocalPicks(arr) {
   try { localStorage.setItem(LOCAL_PICKS_KEY, JSON.stringify(arr)); } catch { /* ignore */ }
+}
+// Returns null when there is no pending offline copy, else the saved array.
+export function getPendingLocalPicks() {
+  try {
+    const v = localStorage.getItem(LOCAL_PICKS_KEY);
+    return v ? JSON.parse(v) : null;
+  } catch { return null; }
+}
+export function clearLocalPicks() {
+  try { localStorage.removeItem(LOCAL_PICKS_KEY); } catch { /* ignore */ }
 }
 
 // Returns { ok: true, picks } on success, { ok: false, status } on auth/other failure.
