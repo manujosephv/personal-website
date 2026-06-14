@@ -313,7 +313,9 @@ export function fmtFlag(team, FLAG) {
 }
 
 export function dayLabel(date) {
-  const d = new Date(date + "T00:00:00+05:30");
+  // Parse the IST calendar date as UTC midnight so the UTC accessors below
+  // report that same calendar day (using +05:30 here would shift to the prior day).
+  const d = new Date(date + "T00:00:00Z");
   return { dow: DOW[d.getUTCDay()], dt: d.getUTCDate() + " " + MON[d.getUTCMonth()] };
 }
 
@@ -732,7 +734,7 @@ import {
   passesFilter, nextMatch, formatCountdown, buildICS,
 } from '../worldcup/logic.js';
 import {
-  getCachedPw, setCachedPw, getLocalPicks, setLocalPicks, fetchPicks, savePicks,
+  getCachedPw, setCachedPw, setLocalPicks, fetchPicks, savePicks,
 } from '../worldcup/sync.js';
 
 const STAGES = [
