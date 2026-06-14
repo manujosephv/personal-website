@@ -98,3 +98,27 @@ The colour system is defined as CSS variables in `src/index.css`:
 - **Add projects**: Edit the `projects` array in `DataScience.jsx`
 - **Update reviews**: Edit the `reviews` array in `Author.jsx`
 - **Add talks**: Edit the `talks` array in `Speaking.jsx`
+
+---
+
+## /worldcup planner — backend setup
+
+The `/worldcup` page is a private, password-gated World Cup 2026 match planner. It stores match
+picks in Upstash Redis (via the Vercel Marketplace) behind a password, so the picks sync across
+your devices.
+
+**One-time setup (Vercel dashboard):**
+1. Project → **Storage** → **Marketplace Database Providers** → **Upstash** → **Redis** →
+   create a database and connect it to this project. Vercel auto-injects the connection env vars
+   (`UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`, plus `KV_REST_API_*` aliases).
+2. Project → **Settings → Environment Variables** → add `WC_PASSWORD` = your chosen password
+   (apply to all environments).
+3. Redeploy.
+
+**Local development:** `vercel dev` runs the `api/picks.js` function and Vite together.
+Run `vercel env pull .env` to copy `WC_PASSWORD` and the Upstash connection vars into a
+gitignored `.env`. (Plain `npm run dev` serves the UI but the `/api/picks` calls won't work —
+the lock screen needs the function, so use `vercel dev` to exercise the full flow.)
+
+The picks live under a single Redis key `wc2026:picks`. The fixture schedule itself ships in the
+JS bundle (public FIFA data); only the picks are stored server-side behind the password.
