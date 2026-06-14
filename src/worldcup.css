@@ -1,0 +1,141 @@
+/* World Cup 2026 planner styles.
+   Every rule is scoped under `.wc-planner` so nothing leaks into the site's
+   global design system. Ported from the standalone wc2026-ist-planner artifact,
+   with an added desktop grid at the bottom. */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+.wc-planner{
+  --bg:#070b08;
+  --bg2:#0c130d;
+  --card:#111a13;
+  --card-hi:#16221a;
+  --line:#1f2e23;
+  --ink:#eef5ef;
+  --muted:#8aa093;
+  --lime:#b6ff3c;
+  --lime-dim:#7bb52a;
+  --amber:#ffc24b;
+  --red:#ff6b5e;
+  --green:#3ddc84;
+  --shadow:0 8px 30px rgba(0,0,0,.5);
+
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(182,255,60,.10), transparent 60%),
+    radial-gradient(800px 500px at 100% 100%, rgba(61,220,132,.06), transparent 60%),
+    var(--bg);
+  color:var(--ink);
+  font-family:'DM Sans',system-ui,sans-serif;
+  line-height:1.45;
+  min-height:100dvh;
+  padding-bottom:96px;
+}
+.wc-planner *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+.wc-planner .wrap{max-width:680px;margin:0 auto;padding:0 14px}
+
+/* Header */
+.wc-planner header{padding:22px 0 10px;text-align:center}
+.wc-planner .kicker{font-size:11px;letter-spacing:.32em;color:var(--lime-dim);text-transform:uppercase;font-weight:700}
+.wc-planner h1{font-family:'Anton',sans-serif;font-weight:400;margin:6px 0 2px;
+   font-size:clamp(38px,12vw,62px);line-height:.92;letter-spacing:.5px;text-transform:uppercase}
+.wc-planner h1 .glow{color:var(--lime);text-shadow:0 0 24px rgba(182,255,60,.45)}
+.wc-planner .sub{color:var(--muted);font-size:13px}
+
+/* Countdown */
+.wc-planner .countdown{
+  margin:16px 0 8px;background:linear-gradient(180deg,var(--card-hi),var(--card));
+  border:1px solid var(--line);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow)}
+.wc-planner .cd-label{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.wc-planner .cd-match{font-weight:700;font-size:15px;margin:3px 0 8px}
+.wc-planner .cd-clock{display:flex;gap:8px;justify-content:flex-start}
+.wc-planner .cd-box{background:#0a120c;border:1px solid var(--line);border-radius:10px;min-width:52px;padding:6px 4px;text-align:center}
+.wc-planner .cd-num{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--lime)}
+.wc-planner .cd-unit{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* Stat strip */
+.wc-planner .stats{display:flex;gap:8px;margin:10px 0 4px}
+.wc-planner .stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.wc-planner .stat b{font-family:'JetBrains Mono',monospace;font-size:22px;display:block;line-height:1}
+.wc-planner .stat span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.wc-planner .stat.pick b{color:var(--lime)}
+.wc-planner .stat.night b{color:var(--amber)}
+
+/* Sticky controls */
+.wc-planner .controls{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,var(--bg) 70%,rgba(7,11,8,.0));
+  padding:10px 0 8px;margin-top:6px}
+.wc-planner .tabs{display:flex;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
+.wc-planner .tab{flex:1;border:none;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;
+  font-size:14px;padding:10px;border-radius:10px;cursor:pointer;transition:.18s}
+.wc-planner .tab.active{background:var(--lime);color:#0a0f0a}
+.wc-planner .search{width:100%;margin-top:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;
+  color:var(--ink);font-family:inherit;font-size:15px;padding:11px 14px}
+.wc-planner .search::placeholder{color:var(--muted)}
+.wc-planner .chips{display:flex;gap:7px;overflow-x:auto;padding:9px 0 2px;scrollbar-width:none;-ms-overflow-style:none}
+.wc-planner .chips::-webkit-scrollbar{display:none}
+.wc-planner .chip{white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--muted);
+  font-family:inherit;font-size:12.5px;font-weight:500;padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s}
+.wc-planner .chip.active{background:var(--ink);color:#0a0f0a;border-color:var(--ink);font-weight:700}
+
+/* Date headers + cards */
+.wc-planner .dayhdr{display:flex;align-items:baseline;gap:8px;margin:18px 2px 8px}
+.wc-planner .dayhdr .dow{font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.5px;text-transform:uppercase;color:var(--lime)}
+.wc-planner .dayhdr .dt{font-size:12.5px;color:var(--muted)}
+.wc-planner .dayhdr .ln{flex:1;height:1px;background:var(--line)}
+
+.wc-planner .card{display:flex;align-items:stretch;gap:12px;background:var(--card);border:1px solid var(--line);
+  border-radius:16px;padding:12px;margin-bottom:9px;transition:.15s}
+.wc-planner .card.picked{border-color:var(--lime);background:linear-gradient(180deg,rgba(182,255,60,.07),var(--card))}
+.wc-planner .time{min-width:62px;text-align:center;display:flex;flex-direction:column;justify-content:center;
+  border-right:1px solid var(--line);padding-right:10px}
+.wc-planner .time .hr{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;letter-spacing:-.5px}
+.wc-planner .time .nx{font-size:9px;color:var(--amber);letter-spacing:.06em;margin-top:1px}
+.wc-planner .info{flex:1;min-width:0}
+.wc-planner .teams{font-weight:700;font-size:16px;line-height:1.25}
+.wc-planner .teams .v{color:var(--muted);font-weight:500;font-size:13px;margin:0 5px}
+.wc-planner .meta{display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap}
+.wc-planner .badge{font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:6px;text-transform:uppercase}
+.wc-planner .b-grp{background:#16261a;color:var(--green)}
+.wc-planner .b-r32{background:#1c2433;color:#7fb0ff}
+.wc-planner .b-r16{background:#241c33;color:#c79bff}
+.wc-planner .b-qf{background:#33231c;color:#ffaa7f}
+.wc-planner .b-sf{background:#331c2a;color:#ff9bcf}
+.wc-planner .b-fin{background:#332f1c;color:var(--amber)}
+.wc-planner .watch{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.wc-planner .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.wc-planner .d-red{background:var(--red)} .wc-planner .d-amb{background:var(--amber)} .wc-planner .d-grn{background:var(--green)}
+.wc-planner .star{flex-shrink:0;width:46px;border:none;background:transparent;cursor:pointer;font-size:24px;
+  color:#2c3a30;display:flex;align-items:center;justify-content:center;transition:.15s}
+.wc-planner .star.on{color:var(--lime);text-shadow:0 0 14px rgba(182,255,60,.6)}
+.wc-planner .star:active{transform:scale(.85)}
+
+.wc-planner .empty{text-align:center;color:var(--muted);padding:48px 20px;font-size:14.5px}
+.wc-planner .empty .big{font-size:40px;display:block;margin-bottom:10px}
+
+/* Action bar */
+.wc-planner .actionbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(0deg,var(--bg) 75%,transparent);
+  padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+.wc-planner .actionbar .inner{max-width:680px;margin:0 auto;display:flex;gap:8px}
+.wc-planner .btn{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;
+  font-weight:700;font-size:13.5px;padding:13px;border-radius:13px;cursor:pointer}
+.wc-planner .btn.primary{background:var(--lime);color:#0a0f0a;border-color:var(--lime)}
+.wc-planner .btn:disabled{opacity:.4}
+
+.wc-planner .note{color:var(--muted);font-size:11.5px;text-align:center;padding:14px 8px 2px;line-height:1.5}
+.wc-planner .note a{color:var(--lime-dim)}
+.wc-planner .toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#0a0f0a;font-weight:700;font-size:13px;padding:10px 16px;border-radius:10px;
+  opacity:0;pointer-events:none;transition:.25s;z-index:40}
+.wc-planner .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Desktop: widen and flow each day's cards into a responsive grid */
+@media (min-width: 900px) {
+  .wc-planner .wrap { max-width: 1100px; }
+  .wc-planner .day-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 9px;
+  }
+  .wc-planner .card { margin-bottom: 0; }
+  .wc-planner .actionbar .inner { max-width: 1100px; }
+}
