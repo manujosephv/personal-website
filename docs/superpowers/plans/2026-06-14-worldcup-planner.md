@@ -6,7 +6,7 @@
 
 **Architecture:** Pure planner logic and fixture data are extracted into testable ES modules (`src/data/`, `src/worldcup/`). A Vercel serverless function (`api/picks.js`) reads/writes a single picks blob in Vercel KV, gated by a server-side password. The React page (`src/pages/WorldCup.jsx`) renders a lock screen, then the planner, syncing through the function with a `localStorage` fallback.
 
-**Tech Stack:** React 18, Vite 5, react-router-dom v7, Vercel Functions, `@vercel/kv`, vitest (new), deployed on Vercel.
+**Tech Stack:** React 18, Vite 5, react-router-dom v7, Vercel Functions, `@upstash/redis` (Vercel Marketplace), vitest (new), deployed on Vercel.
 
 ---
 
@@ -14,12 +14,12 @@
 
 | File | Responsibility | New/Edit |
 |---|---|---|
-| `package.json` | Add `@vercel/kv` dep, `vitest` devDep, `"type": "module"`, `test` script | Edit |
+| `package.json` | Add `@upstash/redis` dep, `vitest` devDep, `"type": "module"`, `test` script | Edit |
 | `src/data/wc2026.js` | Static fixture data: `FLAG` map + `M` match array | New |
 | `src/worldcup/logic.js` | Pure helpers: build/sort matches, stage category/badge, watchability, day grouping, filtering, next match, countdown format, ICS string | New |
 | `src/worldcup/logic.test.js` | Unit tests for `logic.js` | New |
 | `src/worldcup/sync.js` | Client API wrapper: `fetchPicks(pw)`, `savePicks(pw, picks)`, localStorage helpers | New |
-| `api/picks.js` | Serverless function: GET (password header) / POST (password body) against KV | New |
+| `api/picks.js` | Serverless function: GET (password header) / POST (password body) against Upstash Redis | New |
 | `api/picks.test.js` | Unit tests for the function (mocked `@vercel/kv`) | New |
 | `src/worldcup.css` | All planner styles, scoped under `.wc-planner`; desktop grid | New |
 | `src/pages/WorldCup.jsx` | The page: lock screen + planner UI + state + sync wiring | New |
@@ -51,7 +51,7 @@ Edit `package.json` so it reads (preserve existing fields, add the marked lines)
     "test": "vitest run"
   },
   "dependencies": {
-    "@vercel/kv": "^3.0.0",
+    "@upstash/redis": "^1.34.0",
     "lucide-react": "^1.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -68,7 +68,7 @@ Edit `package.json` so it reads (preserve existing fields, add the marked lines)
 - [ ] **Step 2: Install**
 
 Run: `npm install`
-Expected: installs `@vercel/kv` and `vitest` with no errors.
+Expected: installs `@upstash/redis` and `vitest` with no errors.
 
 - [ ] **Step 3: Verify the existing build still works with ESM mode**
 
@@ -79,7 +79,7 @@ Expected: Vite build succeeds (the existing site compiles; `"type": "module"` do
 
 ```bash
 git add package.json package-lock.json
-git commit -m "chore: add vitest + @vercel/kv, enable ESM for serverless functions"
+git commit -m "chore: add vitest + @upstash/redis, enable ESM for serverless functions"
 ```
 
 ---
@@ -408,10 +408,10 @@ Create `api/picks.test.js`:
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const store = {};
-vi.mock('@vercel/kv', () => ({
-  kv: {
-    get: vi.fn(async (k) => (k in store ? store[k] : null)),
-    set: vi.fn(async (k, v) => { store[k] = v; }),
+vi.mock('@upstash/redis', () => ({
+  Redis: class {
+    async get(k) { return k in store ? store[k] : null; }
+    async set(k, v) { store[k] = v; }
   },
 }));
 
@@ -489,9 +489,16 @@ Expected: FAIL — `picks.js` not found.
 Create `api/picks.js`:
 
 ```js
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 
 const KEY = 'wc2026:picks';
+
+// Vercel's Upstash Marketplace integration injects UPSTASH_REDIS_REST_* ;
+// older/native stores expose KV_REST_API_* . Accept either.
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN,
+});
 
 function authed(password) {
   return Boolean(process.env.WC_PASSWORD) && password === process.env.WC_PASSWORD;
@@ -502,7 +509,7 @@ export default async function handler(req, res) {
     if (!authed(req.headers['x-wc-password'])) {
       return res.status(401).json({ error: 'unauthorized' });
     }
-    const picks = (await kv.get(KEY)) ?? [];
+    const picks = (await redis.get(KEY)) ?? [];
     return res.status(200).json({ picks });
   }
 
@@ -514,13 +521,16 @@ export default async function handler(req, res) {
     if (!Array.isArray(picks)) {
       return res.status(400).json({ error: 'picks must be an array' });
     }
-    await kv.set(KEY, picks);
+    await redis.set(KEY, picks);
     return res.status(200).json({ ok: true });
   }
 
   return res.status(405).json({ error: 'method not allowed' });
 }
 ```
+
+Note: `@upstash/redis` stores the array as JSON automatically; `redis.get` returns it already
+parsed (an array), so no `JSON.parse` is needed.
 
 - [ ] **Step 4: Run tests to verify they pass**
 
@@ -1058,18 +1068,18 @@ Add to the end of `README.md`:
 ```markdown
 ## /worldcup planner — backend setup
 
-The `/worldcup` page stores match picks in Vercel KV behind a password.
+The `/worldcup` page stores match picks in Upstash Redis (via the Vercel Marketplace) behind a password.
 
 **One-time setup (Vercel dashboard):**
-1. Project → **Storage** → **Create Database** → **KV** → connect it to this project.
-   Vercel auto-injects `KV_REST_API_URL`, `KV_REST_API_TOKEN`, etc. as env vars.
+1. Project → **Storage** → **Marketplace Database Providers** → **Upstash** → **Redis** →
+   create a database and connect it to this project. Vercel auto-injects the connection env vars
+   (`UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`, and `KV_REST_API_*` aliases).
 2. Project → **Settings → Environment Variables** → add `WC_PASSWORD` = your chosen password
    (all environments).
 3. Redeploy.
 
-**Local development:** `vercel dev` (runs the function + Vite together). Create a local `.env`
-with `WC_PASSWORD=...` and the `KV_REST_API_*` values copied from the Vercel dashboard
-(`vercel env pull .env` does this automatically). `.env` is gitignored.
+**Local development:** `vercel dev` (runs the function + Vite together). `vercel env pull .env`
+copies `WC_PASSWORD` and the Upstash connection vars into a gitignored `.env`.
 ```
 
 - [ ] **Step 2: Commit**
@@ -1092,8 +1102,8 @@ Expected: all `logic.test.js` and `picks.test.js` tests pass.
 
 - [ ] **Step 2: Provision local env (owner)**
 
-Run: `npx vercel link` then `npx vercel env pull .env` (after the dashboard KV + `WC_PASSWORD`
-setup from Task 10). Confirm `.env` contains `WC_PASSWORD` and `KV_REST_API_*`.
+Run: `npx vercel link` then `npx vercel env pull .env` (after the dashboard Upstash + `WC_PASSWORD`
+setup from Task 10). Confirm `.env` contains `WC_PASSWORD` and `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`.
 
 - [ ] **Step 3: Run the app with functions**
 

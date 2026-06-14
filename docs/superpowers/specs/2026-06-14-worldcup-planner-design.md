@@ -44,10 +44,10 @@ Today persistence is per-browser `localStorage`. The owner wants the picks to **
 Browser (React /worldcup page)
    │   lock screen → password (cached in localStorage after first success)
    │
-   ├── GET  /api/picks      (header: x-wc-password)  ──►  Vercel Function ──► Vercel KV  ("wc2026:picks" = [matchId,...])
+   ├── GET  /api/picks      (header: x-wc-password)  ──►  Vercel Function ──► Upstash Redis  ("wc2026:picks" = [matchId,...])
    │        401 if password missing/wrong
    │
-   └── POST /api/picks  { password, picks:[...] }    ──►  Vercel Function ──► Vercel KV
+   └── POST /api/picks  { password, picks:[...] }    ──►  Vercel Function ──► Upstash Redis
             401 if password !== env.WC_PASSWORD, else 200 and overwrite blob
 ```
 
@@ -58,7 +58,7 @@ Browser (React /worldcup page)
 | `src/pages/WorldCup.jsx` | The whole planner UI + state (lock screen, list, filters, countdown, picks, ICS export). Standalone immersive page (own sticky header, **no global `<Nav/>`**, small "← back" link). | `src/data/wc2026.js`, `src/worldcup.css`, the `/api/picks` endpoint |
 | `src/data/wc2026.js` | The static fixture data: `FLAG` map + `M` match array, exported as constants. Pulled out of the component for readability. | — |
 | `src/worldcup.css` | All planner styles, **every selector scoped under a `.wc-planner` root class** so nothing leaks into the global design system. Imports the planner's Google Fonts (Anton, DM Sans, JetBrains Mono). | — |
-| `api/picks.js` | Vercel serverless function. `GET` (password header) returns picks; `POST` validates password and writes. Reads `WC_PASSWORD` + KV creds from env. | Vercel KV client |
+| `api/picks.js` | Vercel serverless function. `GET` (password header) returns picks; `POST` validates password and writes. Reads `WC_PASSWORD` + Upstash connection vars from env. | `@upstash/redis` client |
 | `vercel.json` (edit) | Exclude `/api` from the SPA rewrite so function routes are not swallowed. | — |
 | `src/App.jsx` (edit) | Register `<Route path="/worldcup" element={<WorldCup/>} />`. | — |
 
@@ -74,7 +74,7 @@ Browser (React /worldcup page)
 
 ### Backend storage
 
-- **Vercel KV** (Upstash Redis under the hood). Single key `wc2026:picks` holding a JSON array of integer match IDs.
+- **Upstash Redis** (provisioned through the Vercel Marketplace; Vercel KV was retired and migrated to Upstash in Dec 2024). Single key `wc2026:picks` holding a JSON array of integer match IDs.
 - IDs are the index into the (date-sorted) match array — stable as long as the fixture array order is stable. (Same ID scheme the current artifact already uses.)
 
 ### Auth model
@@ -96,17 +96,17 @@ Browser (React /worldcup page)
 ## One-time owner setup (Vercel dashboard)
 
 Click-by-click steps will be provided at implementation time. In summary:
-1. Create a **KV store** in the Vercel project (Storage → Create → KV) and connect it to `personal-website`. This auto-injects the KV env vars.
+1. Create an **Upstash Redis** database via the Vercel Marketplace (Storage → Marketplace → Upstash → Redis) and connect it to `personal-website`. This auto-injects the connection env vars.
 2. Add an env var `WC_PASSWORD` = chosen password (all environments).
 3. Redeploy.
 
-The KV client package will be added to `package.json` (`@vercel/kv`).
+The Redis client package will be added to `package.json` (`@upstash/redis`).
 
 ---
 
 ## Testing / verification
 
-- **Local dev:** `vercel dev` (runs the function + Vite together) with a local `.env` containing `WC_PASSWORD` and KV creds; verify lock → unlock → pick → reload-persists → wrong-password-rejected → offline-fallback.
+- **Local dev:** `vercel dev` (runs the function + Vite together) with a local `.env` containing `WC_PASSWORD` and the Upstash connection vars; verify lock → unlock → pick → reload-persists → wrong-password-rejected → offline-fallback.
 - Manual matrix: mobile width + desktop width; correct password, wrong password, no password; function reachable vs. simulated failure.
 - Confirm existing routes (`/`, `/builder`, `/storyteller`) render unchanged and no global CSS regressions (planner styles confined to `.wc-planner`).
 
@@ -119,4 +119,4 @@ The KV client package will be added to `package.json` (`@vercel/kv`).
 
 ## Open questions
 
-- None blocking. (Password value and KV provisioning are owner setup steps, captured above.)
+- None blocking. (Password value and Upstash provisioning are owner setup steps, captured above.)
