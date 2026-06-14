@@ -86,8 +86,10 @@ export default function WorldCup() {
       setLocked(false);
     } else if (r.status === 0) {
       setAuthError('Network error — try again.');
-    } else {
+    } else if (r.status === 401) {
       setAuthError('Wrong password.');
+    } else {
+      setAuthError(`Server error (HTTP ${r.status}) — check the planner backend setup.`);
     }
   }
 

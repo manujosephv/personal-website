@@ -14,6 +14,20 @@ function authed(password) {
 }
 
 export default async function handler(req, res) {
+  // TEMP diagnostic (remove before merge): reports whether the env vars are
+  // present in THIS deployment's environment, without leaking any values.
+  if (req.query && req.query.diag) {
+    const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+    const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+    return res.status(200).json({
+      env: process.env.VERCEL_ENV || null,
+      wcPasswordConfigured: Boolean(process.env.WC_PASSWORD),
+      wcPasswordLength: (process.env.WC_PASSWORD || '').length,
+      redisUrlConfigured: Boolean(url),
+      redisTokenConfigured: Boolean(token),
+    });
+  }
+
   if (req.method === 'GET') {
     if (!authed(req.headers['x-wc-password'])) {
       return res.status(401).json({ error: 'unauthorized' });
