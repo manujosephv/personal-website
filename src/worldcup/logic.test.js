@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   buildMatches, stageCat, stageBadge, watch, fmtFlag, formatTime12, istDateString,
-  groupByDay, passesFilter, nextMatch, formatCountdown, buildICS
+  sanitizeUser, groupByDay, passesFilter, nextMatch, formatCountdown, buildICS
 } from './logic.js';
 
 const SAMPLE = [
@@ -73,6 +73,20 @@ describe('istDateString', () => {
   it('rolls to the next day when IST crosses midnight', () => {
     // 18:35 UTC + 5:30 = 00:05 IST next day
     expect(istDateString(new Date('2026-06-20T18:35:00Z'))).toBe('2026-06-21');
+  });
+});
+
+describe('sanitizeUser', () => {
+  it('lowercases and strips non-alphanumerics', () => {
+    expect(sanitizeUser('Sara')).toBe('sara');
+    expect(sanitizeUser('  sa ra! ')).toBe('sara');
+  });
+  it('returns empty string for nullish input (default bucket)', () => {
+    expect(sanitizeUser(null)).toBe('');
+    expect(sanitizeUser(undefined)).toBe('');
+  });
+  it('caps length at 32', () => {
+    expect(sanitizeUser('a'.repeat(50)).length).toBe(32);
   });
 });
 

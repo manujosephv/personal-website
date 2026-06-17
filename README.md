@@ -122,3 +122,9 @@ the lock screen needs the function, so use `vercel dev` to exercise the full flo
 
 The picks live under a single Redis key `wc2026:picks`. The fixture schedule itself ships in the
 JS bundle (public FIFA data); only the picks are stored server-side behind the password.
+
+**Sharing with someone else (separate picks, no extra setup):** add `?u=<name>` to the URL —
+e.g. `/worldcup?u=sara`. Each distinct name gets its own pick bucket (`wc2026:picks:<name>`),
+synced across that person's devices, while everyone uses the same password. No `?u=` = the default
+(owner) bucket. The name only namespaces storage; it isn't a login, so anyone with the password can
+view any bucket by changing the parameter (fine here — nothing sensitive).

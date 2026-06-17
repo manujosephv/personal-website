@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import '../worldcup.css';
 import { FLAG, M } from '../data/wc2026.js';
 import {
-  buildMatches, stageBadge, watch, fmtFlag, formatTime12, istDateString, groupByDay,
-  passesFilter, nextMatch, formatCountdown, buildICS,
+  buildMatches, stageBadge, watch, fmtFlag, formatTime12, istDateString, sanitizeUser,
+  groupByDay, passesFilter, nextMatch, formatCountdown, buildICS,
 } from '../worldcup/logic.js';
 import {
   getCachedPw, setCachedPw, setLocalPicks, getPendingLocalPicks, clearLocalPicks,
@@ -22,6 +22,10 @@ export default function WorldCup() {
     () => matches.filter(m => { const h = +m.time.split(':')[0]; return h < 6 || h >= 22; }).length,
     [matches]
   );
+  // Optional ?u=<name> selects a separate pick bucket (shared password). Empty
+  // means the default/owner bucket. Read once — the URL doesn't change in-session.
+  const who = useMemo(() => sanitizeUser(new URLSearchParams(window.location.search).get('u')), []);
+  const whoLabel = who ? who.charAt(0).toUpperCase() + who.slice(1) : '';
 
   const [locked, setLocked] = useState(true);
   const [pwInput, setPwInput] = useState('');
@@ -48,11 +52,11 @@ export default function WorldCup() {
   // that failed). When one exists, re-push it and clear it once it lands.
   async function hydrate(password, serverPicks) {
     let ids = serverPicks;
-    const pending = getPendingLocalPicks();
+    const pending = getPendingLocalPicks(who);
     if (pending) {
       ids = pending;
-      const res = await savePicks(password, pending);
-      if (res.ok) clearLocalPicks();
+      const res = await savePicks(password, who, pending);
+      if (res.ok) clearLocalPicks(who);
     }
     setPicks(new Set(ids.filter(id => id >= 0 && id < matches.length)));
   }
@@ -61,7 +65,7 @@ export default function WorldCup() {
     const cached = getCachedPw();
     if (!cached) return;
     (async () => {
-      const r = await fetchPicks(cached);
+      const r = await fetchPicks(cached, who);
       if (r.ok) {
         setPw(cached);
         await hydrate(cached, r.picks);
@@ -79,7 +83,7 @@ export default function WorldCup() {
   async function unlock(e) {
     e.preventDefault();
     setAuthError('');
-    const r = await fetchPicks(pwInput);
+    const r = await fetchPicks(pwInput, who);
     if (r.ok) {
       setCachedPw(pwInput);
       setPw(pwInput);
@@ -97,9 +101,9 @@ export default function WorldCup() {
   function persist(nextArr) {
     clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(async () => {
-      const r = await savePicks(pw, nextArr);
+      const r = await savePicks(pw, who, nextArr);
       if (!r.ok) {
-        setLocalPicks(nextArr);
+        setLocalPicks(who, nextArr);
         showToast(r.status === 0 ? 'Offline — saved on this device' : 'Save failed');
       }
     }, 600);
@@ -142,6 +146,7 @@ export default function WorldCup() {
             <div className="kicker">FIFA World Cup 2026 · India Time</div>
             <h1>MY <span className="glow">MATCH</span> PLAN</h1>
             <div className="sub">This planner is private. Enter the password to continue.</div>
+            {who && <div className="who-badge">{whoLabel}'s plan</div>}
           </header>
           <form className="countdown" onSubmit={unlock}>
             <div className="cd-label">Password</div>
@@ -221,6 +226,7 @@ export default function WorldCup() {
           <div className="kicker">FIFA World Cup 2026 · India Time</div>
           <h1>MY <span className="glow">MATCH</span> PLAN</h1>
           <div className="sub">Tap ★ to save the games you'll watch — all times in IST</div>
+          {who && <div className="who-badge">{whoLabel}'s plan</div>}
         </header>
 
         <div className="countdown">
