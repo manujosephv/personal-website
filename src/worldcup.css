@@ -41,6 +41,9 @@
    font-size:clamp(38px,12vw,62px);line-height:.92;letter-spacing:.5px;text-transform:uppercase}
 .wc-planner h1 .glow{color:var(--lime);text-shadow:0 0 24px rgba(182,255,60,.45)}
 .wc-planner .sub{color:var(--muted);font-size:13px}
+.wc-planner .who-badge{display:inline-block;margin-top:8px;font-family:'JetBrains Mono',monospace;
+  font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--lime);
+  background:rgba(182,255,60,.1);border:1px solid var(--lime-dim);padding:3px 10px;border-radius:999px}
 
 /* Countdown */
 .wc-planner .countdown{

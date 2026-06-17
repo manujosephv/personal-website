@@ -58,6 +58,12 @@ export function istDateString(instant) {
   return ist.toISOString().slice(0, 10);
 }
 
+// Normalize a ?u= bucket name to a safe slug (lowercase alphanumerics, max 32).
+// Empty string means the default (original owner's) bucket.
+export function sanitizeUser(u) {
+  return String(u || "").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 32);
+}
+
 export function dayLabel(date) {
   const d = new Date(date + "T00:00:00Z");
   return { dow: DOW[d.getUTCDay()], dt: d.getUTCDate() + " " + MON[d.getUTCMonth()] };

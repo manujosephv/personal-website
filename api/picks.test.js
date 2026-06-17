@@ -63,6 +63,23 @@ describe('POST /api/picks', () => {
   });
 });
 
+describe('per-user buckets', () => {
+  it('keeps a named bucket separate from the default', async () => {
+    await handler({ method: 'POST', headers: {}, body: { password: 'secret', picks: [1] } }, mockRes());
+    await handler({ method: 'POST', headers: {}, body: { password: 'secret', who: 'sara', picks: [9] } }, mockRes());
+    expect(store['wc2026:picks']).toEqual([1]);
+    expect(store['wc2026:picks:sara']).toEqual([9]);
+
+    const res = mockRes();
+    await handler({ method: 'GET', headers: { 'x-wc-password': 'secret', 'x-wc-user': 'sara' }, body: {} }, res);
+    expect(res.body).toEqual({ picks: [9] });
+  });
+  it('sanitizes the bucket name', async () => {
+    await handler({ method: 'POST', headers: {}, body: { password: 'secret', who: 'Sa Ra!', picks: [7] } }, mockRes());
+    expect(store['wc2026:picks:sara']).toEqual([7]);
+  });
+});
+
 describe('other methods', () => {
   it('405s on PUT', async () => {
     const res = mockRes();
